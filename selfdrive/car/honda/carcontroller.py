@@ -15,7 +15,7 @@ from openpilot.selfdrive.controls.lib.pid import PIDController
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 LongCtrlState = car.CarControl.Actuators.LongControlState
-
+_BrakeModifier = 0.0
 
 def compute_gb_honda_bosch(accel, speed):
   # TODO returns 0s, is unused
@@ -23,13 +23,19 @@ def compute_gb_honda_bosch(accel, speed):
 
 
 def compute_gb_honda_nidec(accel, speed):
+  global _BrakeModifier
+  if accel < -3.9:
+    _BrakeModifier += 0.01
+  else:
+    _BrakeModifier = 0.0
   creep_brake = 0.0
   creep_speed = 2.3
   creep_brake_value = 0.15
   if speed < creep_speed:
     creep_brake = (creep_speed - speed) / creep_speed * creep_brake_value
-  gb = float(accel) / 4.8 - creep_brake
-  return clip(gb, 0.0, 1.0), clip(-gb, 0.0, 1.0)
+  gb = float(accel) / interp(float(accel), [4.0, 3.5], [4.0, 4.8]) - creep_brake
+  just_brake = float(accel) / (-4.8 + _BrakeModifier) + creep_brake
+  return clip(gb, 0.0, 1.0), clip(just_brake, 0.0, 1.0)
 
 
 def compute_gas_brake(accel, speed, fingerprint):
@@ -249,7 +255,7 @@ class CarController(CarControllerBase):
           can_sends.extend(hondacan.create_acc_commands(self.packer, self.CAN, CC.enabled, CC.longActive, self.accel, self.gas,
                                                         self.stopping_counter, self.CP.carFingerprint, accel + wind_brake_ms2 + hill_brake))
         else:
-          apply_brake = clip(self.brake_last - wind_brake, 0.0, 1.0)
+          apply_brake = clip(self.brake_last - (wind_brake if self.brake_last <= 0.95 else 0.0), 0.0, 1.0)
           apply_brake = int(clip(apply_brake * self.params.NIDEC_BRAKE_MAX, 0, self.params.NIDEC_BRAKE_MAX - 1))
           pump_on, self.last_pump_ts = brake_pump_hysteresis(apply_brake, self.apply_brake_last, self.last_pump_ts, ts)
 
