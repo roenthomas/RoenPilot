@@ -187,7 +187,9 @@ def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, model_
   # stationary radar points can be false positives
   dist_sane = abs(track.dRel - offset_vision_dist) < max([(offset_vision_dist)*.25, 5.0])
   vel_sane = (abs(track.vRel + v_ego - lead.v[0]) < 10) or (v_ego + track.vRel > 3)
-  if dist_sane and vel_sane:
+  left_lane = interp(track.dRel, model_data.laneLines[1].x, model_data.laneLines[1].y)
+  right_lane = interp(track.dRel, model_data.laneLines[2].x, model_data.laneLines[2].y)
+  if dist_sane and vel_sane and (left_lane < -track.yRel < right_lane):
     return track
   else:
     return None
@@ -221,10 +223,13 @@ def get_lead(v_ego: float, ready: bool, tracks: dict[int, Track], lead_msg: capn
   else:
     track = None
 
+  left_lane = interp(float(lead_msg.x[0] - RADAR_TO_CAMERA), model_data.laneLines[1].x, model_data.laneLines[1].y)
+  right_lane = interp(float(lead_msg.x[0] - RADAR_TO_CAMERA), model_data.laneLines[2].x, model_data.laneLines[2].y)
+
   lead_dict = {'status': False}
   if track is not None:
     lead_dict = track.get_RadarState(lead_msg.prob)
-  elif (track is None) and ready and (lead_msg.prob > frogpilot_toggles.lead_detection_probability):
+  elif (track is None) and ready and (lead_msg.prob > frogpilot_toggles.lead_detection_probability) and (left_lane < float(lead_msg.y[0]) < right_lane):
     lead_dict = get_RadarState_from_vision(lead_msg, v_ego, model_v_ego)
 
   if low_speed_override:
