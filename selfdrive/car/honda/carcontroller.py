@@ -6,7 +6,7 @@ from openpilot.common.realtime import DT_CTRL
 from opendbc.can.packer import CANPacker
 from openpilot.selfdrive.car import create_gas_interceptor_command
 from openpilot.selfdrive.car.honda import hondacan
-from openpilot.selfdrive.car.honda.values import CruiseButtons, VISUAL_HUD, HONDA_BOSCH, HONDA_BOSCH_RADARLESS, HONDA_NIDEC_ALT_PCM_ACCEL, CarControllerParams
+from openpilot.selfdrive.car.honda.values import CruiseButtons, VISUAL_HUD, HONDA_BOSCH, HONDA_BOSCH_RADARLESS, HONDA_NIDEC_ALT_PCM_ACCEL, CarControllerParams, HondaFrogPilotFlags
 from openpilot.selfdrive.car.interfaces import CarControllerBase
 from openpilot.selfdrive.controls.lib.drive_helpers import rate_limit
 
@@ -99,10 +99,18 @@ HUDData = namedtuple("HUDData",
                       "lanes_visible", "fcw", "acc_alert", "steer_required", "lead_distance_bars"])
 
 
-def rate_limit_steer(new_steer, last_steer):
-  # TODO just hardcoded ramp to min/max in 0.33s for all Honda
-  MAX_DELTA = 3 * DT_CTRL
-  return clip(new_steer, last_steer - MAX_DELTA, last_steer + MAX_DELTA)
+def rate_limit_steer(new_steer, last_steer, CP):
+  if (CP.flags & HondaFrogPilotFlags.EPS_MODIFIED) and CP.lateralTuning.which() == "pid":
+    # Speed params can be adjusted if needed
+    base_tau = 0.2  # Time constant in seconds
+    alpha = DT_CTRL / (base_tau + DT_CTRL)  # Alpha for first-order low-pass
+
+    # Simple low-pass filter
+    return alpha * new_steer + (1 - alpha) * last_steer
+  else:
+    # TODO just hardcoded ramp to min/max in 0.33s for all Honda
+    MAX_DELTA = 3 * DT_CTRL
+    return clip(new_steer, last_steer - MAX_DELTA, last_steer + MAX_DELTA)
 
 
 class CarController(CarControllerBase):
@@ -141,7 +149,7 @@ class CarController(CarControllerBase):
       gas, brake = 0.0, 0.0
 
     # *** rate limit steer ***
-    limited_steer = rate_limit_steer(actuators.steer, self.last_steer)
+    limited_steer = rate_limit_steer(actuators.steer, self.last_steer, self.CP)
     self.last_steer = limited_steer
 
     # *** apply brake hysteresis ***
