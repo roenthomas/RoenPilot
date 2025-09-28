@@ -276,6 +276,7 @@ class PlatformConfig(Freezable):
   dbc_dict: DbcDict
 
   flags: int = 0
+  rp_flags: int = 0
 
   platform_str: str | None = None
 
@@ -320,3 +321,7 @@ class Platforms(str, ReprEnum, metaclass=PlatformsType):
   @classmethod
   def with_flags(cls, flags: IntFlag) -> set['Platforms']:
     return {p for p in cls if p.config.flags & flags}
+
+  @classmethod
+  def with_rp_flags(cls, rp_flags: IntFlag) -> set['Platforms']:
+    return {p for p in cls if p.config.rp_flags & rp_flags}
