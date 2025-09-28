@@ -61,6 +61,9 @@ class HondaFlags(IntFlag):
   NIDEC_ALT_PCM_ACCEL = 2**5
   NIDEC_ALT_SCM_MESSAGES = 2**6
 
+class HondaFrogPilotFlags(IntFlag):
+  EPS_MODIFIED = 2**7
+
 
 # Car button codes
 class CruiseButtons:
