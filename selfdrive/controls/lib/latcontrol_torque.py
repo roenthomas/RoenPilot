@@ -7,6 +7,7 @@ from openpilot.common.filter_simple import FirstOrderFilter
 from openpilot.common.numpy_fast import clip, interp
 from openpilot.selfdrive.controls.lib.drive_helpers import MIN_SPEED, get_friction
 from openpilot.selfdrive.car.interfaces import FRICTION_THRESHOLD
+from openpilot.selfdrive.car.honda.values import CAR
 from openpilot.selfdrive.controls.lib.latcontrol import LatControl
 from openpilot.selfdrive.controls.lib.pid import PIDController
 from openpilot.selfdrive.controls.lib.vehicle_model import ACCELERATION_DUE_TO_GRAVITY
@@ -26,6 +27,8 @@ MAX_LAT_JERK_UP = 2.5            # m/s^3
 
 LOW_SPEED_X = [0, 10, 20, 30]
 LOW_SPEED_Y = [15, 13, 10, 5]
+LOW_SPEED_Y_CLARITY = [30, 15, 10, 5]
+LOW_SPEED_Y_CIVIC = [40, 20, 10, 5]
 
 
 class LatControlTorque(LatControl):
@@ -42,6 +45,9 @@ class LatControlTorque(LatControl):
     self.requested_lateral_accel_buffer = deque([0.] * self.LATACCEL_REQUEST_BUFFER_NUM_FRAMES , maxlen=self.LATACCEL_REQUEST_BUFFER_NUM_FRAMES)
     self.previous_measurement = 0.0
     self.measurement_rate_filter = FirstOrderFilter(0.0, 1 / (2 * pi * (MAX_LAT_JERK_UP - 0.5)), self.dt)
+
+    # specific car fingerprint
+    self.carFingerprint = CP.carFingerprint
 
   def update_live_torque_params(self, latAccelFactor, latAccelOffset, friction):
     self.torque_params.latAccelFactor = latAccelFactor
@@ -76,7 +82,14 @@ class LatControlTorque(LatControl):
       measurement_rate = self.measurement_rate_filter.update((measurement - self.previous_measurement) / self.dt)
       self.previous_measurement = measurement
 
-      low_speed_factor = (interp(CS.vEgo, LOW_SPEED_X, LOW_SPEED_Y) / max(CS.vEgo, MIN_SPEED)) ** 2
+      if self.carFingerprint == CAR.HONDA_CLARITY:
+        lsfinterp = interp(CS.vEgo, LOW_SPEED_X, LOW_SPEED_Y_CLARITY) / max(CS.vEgo, MIN_SPEED)
+      elif self.carFingerprint == CAR.HONDA_CIVIC:
+        lsfinterp = interp(CS.vEgo, LOW_SPEED_X, LOW_SPEED_Y_CIVIC) / max(CS.vEgo, MIN_SPEED)
+      else:
+        lsfinterp = interp(CS.vEgo, LOW_SPEED_X, LOW_SPEED_Y) / max(CS.vEgo, MIN_SPEED)
+      
+      low_speed_factor = lsfinterp * lsfinterp
       setpoint = lat_delay * desired_lateral_jerk + expected_lateral_accel
       error = setpoint - measurement
       error_lsf = error + low_speed_factor / self.torque_params.kp * error
