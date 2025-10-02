@@ -1,5 +1,49 @@
 #!/usr/bin/env python3
 import numpy as np
+from openpilot.common.numpy_fast import interp
+
+
+def cubic_interp(x, xp, fp):
+     """Cubic interpolation using NumPy's native operations for speed."""
+     # Boundary conditions
+     if x <= xp[0]:
+         return fp[0]
+     elif x >= xp[-1]:
+         return fp[-1]
+
+     # Find interval
+     i = np.searchsorted(xp, x) - 1
+     i = max(0, min(i, len(xp)-2))  # clamp the index
+
+     # Normalized position
+     t = (x - xp[i]) / float(xp[i+1] - xp[i])
+
+     # Hermite cubic formula
+     t2 = t*t
+     t3 = t2*t
+
+     return fp[i]*(1 - 3*t2 + 2*t3) + fp[i+1]*(3*t2 - 2*t3)
+
+def akima_interp(x, xp, fp):
+     """Akima-inspired interpolation with reduced overshoot characteristics."""
+     if x <= xp[0]:
+         return fp[0]
+     elif x >= xp[-1]:
+         return fp[-1]
+
+     i = np.searchsorted(xp, x) - 1
+     i = max(0, min(i, len(xp)-2))  # clamp the index
+
+     t = (x - xp[i]) / float(xp[i+1] - xp[i])
+
+     # Quintic polynomial to reduce overshoot
+     t2 = t*t
+     t3 = t2*t
+     t4 = t2*t2
+     t5 = t3*t2
+
+     return (fp[i]*(1 - 10*t3 + 15*t4 - 6*t5) + fp[i+1]*(10*t3 - 15*t4 + 6*t5))
+
 
 from openpilot.selfdrive.controls.lib.longitudinal_planner import ACCEL_MIN, get_max_accel
 
@@ -14,19 +58,19 @@ A_CRUISE_MAX_VALS_ECO =   [2.0, 1.5, 1.0, 0.8, 0.6, 0.4, 0.2]
 A_CRUISE_MAX_VALS_SPORT = [3.0, 2.5, 2.0, 1.5, 1.0, 0.8, 0.6]
 
 def get_max_accel_eco(v_ego):
-  return float(np.interp(v_ego, A_CRUISE_MAX_BP_CUSTOM, A_CRUISE_MAX_VALS_ECO))
+  return float(akima_interp(v_ego, A_CRUISE_MAX_BP_CUSTOM, A_CRUISE_MAX_VALS_ECO))
 
 def get_max_accel_sport(v_ego):
-  return float(np.interp(v_ego, A_CRUISE_MAX_BP_CUSTOM, A_CRUISE_MAX_VALS_SPORT))
+  return float(interp(v_ego, A_CRUISE_MAX_BP_CUSTOM, A_CRUISE_MAX_VALS_SPORT))
 
 def get_max_accel_low_speeds(max_accel, v_cruise):
-  return float(np.interp(v_cruise, [0., CITY_SPEED_LIMIT / 2, CITY_SPEED_LIMIT], [max_accel / 4, max_accel / 2, max_accel]))
+  return float(akima_interp(v_cruise, [0., CITY_SPEED_LIMIT / 2, CITY_SPEED_LIMIT], [max_accel / 4, max_accel / 2, max_accel]))
 
 def get_max_accel_ramp_off(max_accel, v_cruise, v_ego):
-  return float(np.interp(v_cruise - v_ego, [0., 1., 5.], [0., 0.5, max_accel]))
+  return float(akima_interp(v_cruise - v_ego, [0., 1., 5.], [0., 0.5, max_accel]))
 
 def get_max_allowed_accel(v_ego):
-  return float(np.interp(v_ego, [0., 5., 20.], [4.0, 4.0, 2.0]))  # ISO 15622:2018
+  return float(interp(v_ego, [0., 5., 20.], [4.0, 4.0, 2.0]))  # ISO 15622:2018
 
 class FrogPilotAcceleration:
   def __init__(self, FrogPilotPlanner):
