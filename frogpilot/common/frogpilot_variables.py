@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import json
-from openpilot.common.numpy_fast import clip
+from openpilot.common.numpy_fast import clip, interp
 import os
 import random
 import tomllib
@@ -44,6 +44,10 @@ MAX_T_FOLLOW = 3.0                        # Maximum allowed following duration. 
 MINIMUM_LATERAL_ACCELERATION = 1.3        # m/s^2, typical minimum lateral acceleration when taking curves
 PLANNER_TIME = ModelConstants.T_IDXS[-1]  # Length of time the model projects out for
 THRESHOLD = 0.63                          # Requires the condition to be true for ~1 second
+
+def scale_threshold(v_ego):#0   40    60    80   100       0    40    60   80   100
+  # More aggressive with hysteresis and lead probability: faster activation at higher speeds
+  return interp(v_ego, [0, 17.9, 26.8, 35.8, 44.7], [0.58, 0.60, 0.62, 0.75, 0.9])
 
 NON_DRIVING_GEARS = [GearShifter.neutral, GearShifter.park, GearShifter.reverse, GearShifter.unknown]
 
