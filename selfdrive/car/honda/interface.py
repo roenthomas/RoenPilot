@@ -5,10 +5,12 @@ from openpilot.common.conversions import Conversions as CV
 from openpilot.common.numpy_fast import interp
 from openpilot.selfdrive.car.honda.hondacan import CanBus
 from openpilot.selfdrive.car.honda.values import CarControllerParams, CruiseButtons, CruiseSettings, HondaFlags, CAR, HONDA_BOSCH, \
-                                                 HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_RADARLESS, HondaFrogPilotFlags
+                                                 HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_RADARLESS, HondaFrogPilotFlags, HONDA_NIDEC_PEDAL_TUNE
 from openpilot.selfdrive.car import create_button_events, get_safety_config
 from openpilot.selfdrive.car.interfaces import CarInterfaceBase
 from openpilot.selfdrive.car.disable_ecu import disable_ecu
+
+from roenpilot.common.roenpilot_variables import ISO_MAX_BP, ISO_MAX_VALS
 
 
 ButtonType = car.CarState.ButtonEvent.Type
@@ -25,7 +27,10 @@ class CarInterface(CarInterfaceBase):
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
     if CP.carFingerprint in HONDA_BOSCH:
       return CarControllerParams.BOSCH_ACCEL_MIN, CarControllerParams.BOSCH_ACCEL_MAX
-    elif CP.enableGasInterceptor:
+    elif CP.enableGasInterceptor and CP.carFingerprint in HONDA_NIDEC_PEDAL_TUNE:
+      # ISO 15622:2018
+      return CarControllerParams.NIDEC_ACCEL_MIN, interp(current_speed, ISO_MAX_BP, ISO_MAX_VALS)
+    elif CP.enableGasInterceptor and CP.carFingerprint not in HONDA_NIDEC_PEDAL_TUNE:
       return CarControllerParams.NIDEC_ACCEL_MIN, CarControllerParams.NIDEC_ACCEL_MAX
     else:
       # NIDECs don't allow acceleration near cruise_speed,

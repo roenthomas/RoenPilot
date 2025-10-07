@@ -8,7 +8,7 @@ from opendbc.can.packer import CANPacker
 from openpilot.selfdrive.car import create_gas_interceptor_command
 from openpilot.selfdrive.controls.lib.vehicle_model import ACCELERATION_DUE_TO_GRAVITY
 from openpilot.selfdrive.car.honda import hondacan
-from openpilot.selfdrive.car.honda.values import CruiseButtons, VISUAL_HUD, HONDA_BOSCH, HONDA_BOSCH_RADARLESS, HONDA_NIDEC_ALT_PCM_ACCEL, CarControllerParams
+from openpilot.selfdrive.car.honda.values import CruiseButtons, VISUAL_HUD, HONDA_BOSCH, HONDA_BOSCH_RADARLESS, HONDA_NIDEC_ALT_PCM_ACCEL, CarControllerParams, HONDA_NIDEC_PEDAL_TUNE
 from openpilot.selfdrive.car.interfaces import CarControllerBase
 from openpilot.selfdrive.controls.lib.drive_helpers import rate_limit
 from openpilot.selfdrive.controls.lib.pid import PIDController
@@ -262,12 +262,16 @@ class CarController(CarControllerBase):
           self.brake = apply_brake / self.params.NIDEC_BRAKE_MAX
 
           if self.CP.enableGasInterceptor:
-            # way too aggressive at low speed without this
-            gas_mult = interp(CS.out.vEgo, [0., 10.], [0.4, 1.0])
-            # send exactly zero if apply_gas is zero. Interceptor will send the max between read value and apply_gas.
-            # This prevents unexpected pedal range rescaling
-            # Sending non-zero gas when OP is not enabled will cause the PCM not to respond to throttle as expected
-            # when you do enable.
+            if self.CP.carFingerprint in HONDA_NIDEC_PEDAL_TUNE:
+              # mike8643 Clarity Long Tune Interpolation applied to all tested vehicles
+              gas_mult = 1
+            else:
+              # way too aggressive at low speed without this
+              gas_mult = interp(CS.out.vEgo, [0., 10.], [0.4, 1.0])
+              # send exactly zero if apply_gas is zero. Interceptor will send the max between read value and apply_gas.
+              # This prevents unexpected pedal range rescaling
+              # Sending non-zero gas when OP is not enabled will cause the PCM not to respond to throttle as expected
+              # when you do enable.
             if CC.longActive:
               self.gas = clip(gas_mult * (gas - brake + wind_brake * 3 / 4), 0., 1.)
             else:
