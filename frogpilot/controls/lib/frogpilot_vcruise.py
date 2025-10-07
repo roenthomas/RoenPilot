@@ -92,6 +92,24 @@ class FrogPilotVCruise:
       if frogpilot_toggles.speed_limit_controller:
         targets.append(max(self.slc.overridden_speed, self.slc_target + self.slc_offset) - v_ego_diff)
 
-      v_cruise = min([target if target > CRUISING_SPEED else v_cruise for target in targets])
+      # Float 10 mph / kph over vcruise
+
+      # Params for v float
+      # For all of these variables, Too much will lead to brake use, too little will prevent OP to drop accel command at all.
+      factor_init_decel = 0.5 # Tune for initial deceleration to get OP to drop accel command, "coast".
+      factor_maint_decel = 0.1  # Tune for maintaining deceleration after accel command is below factor_init_decel.
+      factor_typ_terrain = 0  # Tune for typical terrain. If very steep hills, downhill results in higher natural acceleration so to prevent downhill braking value must be higher.
+      speed_scalar = 10 # magnitude of mph / kph offset
+      speed_offset = speed_scalar * (CV.KPH_TO_MS if frogpilot_toggles.is_metric else CV.MPH_TO_MS)  # offset converted to m/s
+
+      # v float logic
+      actuators = sm["carControl"].actuators
+      # This substitutes v_cruise with speed buffer or 10 mph over set speed. Speed buffer being slightly under actual speed allows for slight amount of deceleration.
+      # Tuning the speed buffer to match your vehicles wind drag, tire rolling resistance, and types of terrain is key.
+      if all(target >= v_cruise for target in targets) and v_ego > (v_cruise + factor_init_decel):
+        buffer = factor_maint_decel if actuators.accel < factor_typ_terrain else factor_init_decel
+        v_cruise = min(v_ego - buffer, v_cruise + speed_offset)  # Setting v float to 10 MPH / KPH above cruise depending on is_metric toggle
+      else:
+        v_cruise = min([target if target > CRUISING_SPEED else v_cruise for target in targets])
 
     return v_cruise
