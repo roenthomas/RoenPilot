@@ -185,9 +185,8 @@ class CarController(CarControllerBase):
     # wind brake from air resistance decel at high speed
     wind_brake_ms2 = interp(CS.out.vEgo, [0.0, 13.4, 22.4, 31.3, 40.2], [0.000, 0.049, 0.136, 0.267, 0.441]) # in m/s2 units
     hill_brake = math.sin(self.pitch) * ACCELERATION_DUE_TO_GRAVITY
-
+    wind_brake = interp(CS.out.vEgo, [0.0, 2.3, 17.8816, 29.0576], [0.001, 0.002, 0.003, 0.67056])
     # all of this is only relevant for HONDA NIDEC
-    wind_brake = interp(CS.out.vEgo, [0.0, 2.3, 35.0], [0.001, 0.002, 0.15]) # not in m/s2 units
     max_accel = interp(CS.out.vEgo, self.params.NIDEC_MAX_ACCEL_BP, self.params.NIDEC_MAX_ACCEL_V)
     # TODO this 1.44 is just to maintain previous behavior
     pcm_speed_BP = [-wind_brake,
@@ -273,8 +272,9 @@ class CarController(CarControllerBase):
               # Sending non-zero gas when OP is not enabled will cause the PCM not to respond to throttle as expected
               # when you do enable.
             if CC.longActive:
-              self.gas = clip(gas_mult * (gas - brake + wind_brake * 3 / 4), 0., 1.)
+              self.gas = clip(gas_mult * gas, 0., 1.)
             else:
+              wind_brake = 0.0 # fix car surging on engagement
               self.gas = 0.0
             can_sends.append(create_gas_interceptor_command(self.packer, self.gas, self.frame // 2))
 
