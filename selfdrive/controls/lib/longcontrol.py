@@ -4,6 +4,8 @@ from openpilot.common.realtime import DT_CTRL
 from openpilot.selfdrive.controls.lib.drive_helpers import CONTROL_N, apply_deadzone
 from openpilot.selfdrive.controls.lib.pid import PIDController
 from openpilot.selfdrive.modeld.constants import ModelConstants
+from openpilot.common.filter_simple import FirstOrderFilter
+from openpilot.selfdrive.car.gm.values import CarControllerParams 
 
 CONTROL_N_T_IDX = ModelConstants.T_IDXS[:CONTROL_N]
 
@@ -90,13 +92,42 @@ class LongControl:
   def __init__(self, CP):
     self.CP = CP
     self.long_control_state = LongCtrlState.off
+    self.experimental_mode = False
     pos_p_limit = 0.0 # if params("NoPositivePResponse") else None # put parameter-based control here
     self.pid = PIDController((CP.longitudinalTuning.kpBP, CP.longitudinalTuning.kpV),
                              (CP.longitudinalTuning.kiBP, CP.longitudinalTuning.kiV),
                              k_f=CP.longitudinalTuning.kfDEPRECATED, rate=1 / DT_CTRL,
                              pos_p_limit=pos_p_limit)
     self.v_pid = 0.0
+    self._mode_setup()
     self.last_output_accel = 0.0
+
+  def update_mpc_mode(self, experimental_mode):
+    new_mode = 'blended' if experimental_mode else 'acc'
+
+    if self.transitioning and self.prev_mode == 'blended' and self.current_mode == 'acc':
+      self.mode_transition_timer = 0.0
+
+    if new_mode != self.current_mode:
+      self.prev_mode = self.current_mode
+      self.transitioning = True
+      self.mode_transition_timer = 0.0
+      self.mode_transition_filter.x = self.last_output_accel
+
+      self.current_mode = new_mode
+
+    if self.transitioning:
+      self.mode_transition_timer += DT_CTRL
+      if self.mode_transition_timer >= self.mode_transition_duration:
+        self.transitioning = False
+
+  def _mode_setup(self):
+    self.prev_mode = 'acc'
+    self.current_mode = 'acc'
+    self.mode_transition_filter = FirstOrderFilter(0.0, 0.5, DT_CTRL)
+    self.mode_transition_timer = 0.0
+    self.mode_transition_duration = 1.0
+    self.transitioning = False
 
   def reset(self):
     self.pid.reset()
