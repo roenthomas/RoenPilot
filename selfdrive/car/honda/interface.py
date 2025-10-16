@@ -137,8 +137,6 @@ class CarInterface(CarInterfaceBase):
         # note: max request allowed is 4096, but request is capped at 3840 in firmware, so modifications result in 2x max
         ret.lateralParams.torqueV = [0, 3072, 6144, 9216, 14400, 18432, 21504, 24576, 28800]  # Actual EPS Values
         ret.lateralParams.torqueBP = [0, 192, 512, 1024, 1920, 2560, 3072, 3584, 3840]
-        # Enable torque controller
-        ret.lateralTuning.init('torque')
         if ret.lateralTuning.which() != "torque":
           ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.3], [0.1]]
         else:
@@ -152,8 +150,6 @@ class CarInterface(CarInterfaceBase):
           ret.lateralTuning.torque.steeringAngleDeadzoneDeg = 0.0
       else:
         ret.lateralParams.torqueBP, ret.lateralParams.torqueV = [[0, 2560], [0, 2560]]  # Stock Honda EPS Firmware
-        # Enable torque controller
-        CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
         if ret.lateralTuning.which() != "torque":
           ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[1.1], [0.33]]  # Stock Honda EPS Firmware
           ret.lateralTuning.pid.kf = 0.00006  # Default feed-forward
