@@ -106,11 +106,6 @@ struct FrogPilotCarParams @0xf35cc4560bbf6ec2 {
   openpilotLongitudinalControlDisabled @4 :Bool;
   safetyConfigs @5 :List(SafetyConfig);
 
-  lateralTuning :union {
-    pid @6 :Car.CarParams.LateralPIDTuning;
-    torque @7 :Car.CarParams.LateralTorqueTuning;
-  }
-
   struct SafetyConfig {
     safetyParam @0 :UInt16;
   }

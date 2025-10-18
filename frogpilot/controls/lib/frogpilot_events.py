@@ -51,6 +51,13 @@ class FrogPilotEvents:
         self.random_event_playing = False
         self.random_event_timer = 0
 
+    acceleration = sm["carState"].aEgo
+
+    if not sm["carState"].gasPressed:
+      self.max_acceleration = max(acceleration, self.max_acceleration)
+    else:
+      self.max_acceleration = 0
+
     if self.error_log.is_file():
       if frogpilot_toggles.random_events:
         self.events.add(FrogPilotEventName.openpilotCrashedRandomEvent)
@@ -91,13 +98,6 @@ class FrogPilotEvents:
       self.played_events.add("torqueNNLoad")
 
     if not self.random_event_playing and frogpilot_toggles.random_events:
-      acceleration = sm["carState"].aEgo
-
-      if not sm["carState"].gasPressed:
-        self.max_acceleration = max(acceleration, self.max_acceleration)
-      else:
-        self.max_acceleration = 0
-
       if "accel30" not in self.played_events and 3.5 > self.max_acceleration >= 3.0 and acceleration < 1.5:
         self.events.add(FrogPilotEventName.accel30)
 

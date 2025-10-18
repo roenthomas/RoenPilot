@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;Hız sabitleyici düğmesinin davranışını tersine çevirin&lt;/b&gt;, böylece kısa basışta ayarlı hız 1 yerine 5 artırılır.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">Takip Mesafesini Artır:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">Hızlanmayı şu kadar azalt:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">Virajlarda Hızı Azalt:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">Kar</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Karlı koşullar için sürüş ayarlamaları.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Karda öndeki araçların arkasında ekstra mesafe bırakın.&lt;/b&gt; Daha fazla mesafe için artırın; daha dar boşluklar için azaltın.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Karda araçların arkasında dururken ekstra boşluk bırakın.&lt;/b&gt; Daha fazla alan için artırın; daha kısa boşluklar için azaltın.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Karda azami ivmeyi düşürün.&lt;/b&gt; Yumuşak kalkışlar için artırın; daha hızlı ancak daha az stabil kalkışlar için azaltın.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Karda virajlardan geçerken istenen hızı azaltın.&lt;/b&gt; Daha güvenli, daha yumuşak dönüşler için artırın; virajlarda daha atak sürüş için azaltın.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">Hız Sınırı Denetleyicisi</translation>
     </message>

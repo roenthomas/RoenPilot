@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;크루즈 컨트롤 버튼 동작을 반대로&lt;/b&gt; 하여 짧게 누르면 설정 속도가 1이 아니라 5만큼 증가하도록 합니다.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">차간 거리 증가:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">가속을 다음만큼 감소:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">커브에서 속도 감소 기준:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">눈</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;눈길 주행을 위한 조정.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;눈길에서는 앞차와의 거리를 더 넉넉히 두십시오.&lt;/b&gt; 늘리면 더 넓게, 줄이면 더 촘촘하게 간격이 설정됩니다.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;눈길에서 앞차 뒤에 정차할 때 여유 간격을 더 두세요.&lt;/b&gt; 더 넓게 하려면 증가, 더 좁게 하려면 감소.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;눈길에서는 최대 가속을 낮추십시오.&lt;/b&gt; 부드러운 출발을 원하면 높이고, 더 빠르지만 덜 안정적인 출발을 원하면 낮추십시오.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;눈길에서 커브를 지날 때 원하는 속도를 낮추세요.&lt;/b&gt; 안전하고 부드러운 코너링을 원하면 높이고, 커브에서 더 공격적으로 주행하려면 낮추세요.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">속도 제한 컨트롤러</translation>
     </message>

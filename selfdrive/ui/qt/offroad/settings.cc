@@ -529,13 +529,15 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
 
       if (panelOpen) {
         closePanel();
-
         panelOpen = false;
       }
       if (subPanelOpen) {
         closeSubPanel();
-
         subPanelOpen = false;
+      }
+      if (subSubPanelOpen) {
+        closeSubSubPanel();
+        subSubPanelOpen = false;
       }
       btn->setChecked(true);
       panel_widget->setCurrentWidget(w);

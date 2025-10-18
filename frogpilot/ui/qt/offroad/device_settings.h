@@ -21,8 +21,6 @@ private:
   bool forceOpenDescriptions;
   bool started;
 
-  int tuningLevel;
-
   std::map<QString, AbstractControl*> toggles;
 
   QSet<QString> deviceManagementKeys = {"DeviceShutdown", "HigherBitrate", "IncreaseThermalLimits", "LowVoltageShutdown", "NoLogging", "NoUploads", "UseKonikServer"};

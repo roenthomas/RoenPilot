@@ -36,8 +36,6 @@ private:
   bool wheelDownloading;
   bool wheelsDownloaded;
 
-  int tuningLevel;
-
   std::map<QString, AbstractControl*> toggles;
 
   QSet<QString> customThemeKeys = {"CustomColors", "CustomDistanceIcons", "CustomIcons", "CustomSignals", "CustomSounds", "DownloadStatusLabel", "WheelIcon"};

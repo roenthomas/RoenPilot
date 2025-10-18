@@ -4,7 +4,7 @@
 #include "frogpilot/ui/qt/offroad/vehicle_settings.h"
 
 QStringList getCarNames(const QString &carMake, QMap<QString, QString> &carModels) {
-  static const QMap<QString, QString> makeMap = {
+  static QMap<QString, QString> makeMap = {
     {"acura", "honda"},
     {"audi", "volkswagen"},
     {"buick", "gm"},
@@ -42,16 +42,15 @@ QStringList getCarNames(const QString &carMake, QMap<QString, QString> &carModel
     return carNameList;
   }
 
-  QTextStream in(&valuesFile);
-  QString fileContent = in.readAll();
+  QString fileContent = QTextStream(&valuesFile).readAll();
   valuesFile.close();
 
   fileContent.remove(QRegularExpression("#[^\n]*"));
   fileContent.remove(QRegularExpression("footnotes=\\[[^\\]]*\\],\\s*"));
 
-  static const QRegularExpression carNameRegex("CarDocs\\(\\s*\"([^\"]+)\"[^)]*\\)");
-  static const QRegularExpression platformRegex("((\\w+)\\s*=\\s*\\w+\\s*\\(\\s*\\[([\\s\\S]*?)\\]\\s*,)");
-  static const QRegularExpression validNameRegex("^[A-Za-z0-9 \u0160.()-]+$");
+  static QRegularExpression carNameRegex("CarDocs\\(\\s*\"([^\"]+)\"[^)]*\\)");
+  static QRegularExpression platformRegex("((\\w+)\\s*=\\s*\\w+\\s*\\(\\s*\\[([\\s\\S]*?)\\]\\s*,)");
+  static QRegularExpression validNameRegex("^[A-Za-z0-9 \u0160.()-]+$");
 
   QRegularExpressionMatchIterator platformMatches = platformRegex.globalMatch(fileContent);
   while (platformMatches.hasNext()) {
@@ -62,14 +61,13 @@ QStringList getCarNames(const QString &carMake, QMap<QString, QString> &carModel
     QRegularExpressionMatchIterator carNameMatches = carNameRegex.globalMatch(platformSection);
     while (carNameMatches.hasNext()) {
       QString carName = carNameMatches.next().captured(1);
+
       if (carName.contains(validNameRegex) && carName.count(" ") >= 1) {
-        QStringList carNameParts = carName.split(" ");
-        for (const QString &part : carNameParts) {
-          if (part.compare(carMake, Qt::CaseInsensitive) == 0) {
-            carNameList.append(carName);
-            carModels[carName] = platformName;
-          }
-          break;
+        QString firstWord = carName.section(" ", 0, 0);
+
+        if (firstWord.compare(carMake, Qt::CaseInsensitive) == 0) {
+          carModels[carName] = platformName;
+          carNameList.append(carName);
         }
       }
     }
@@ -326,31 +324,19 @@ void FrogPilotVehiclesPanel::showEvent(QShowEvent *event) {
   }
 
   frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  hasExperimentalOpenpilotLongitudinal = parent->hasExperimentalOpenpilotLongitudinal;
-  hasOpenpilotLongitudinal = parent->hasOpenpilotLongitudinal;
-  hasPedal = parent->hasPedal;
-  hasSNG = parent->hasSNG;
-  isC3 = parent->isC3;
-  isGM = parent->isGM;
-  isHKG = parent->isHKG;
-  isHKGCanFd = parent->isHKGCanFd;
-  isToyota = parent->isToyota;
-  isVolt = parent->isVolt;
-  openpilotLongitudinalControlDisabled = parent->openpilotLongitudinalControlDisabled || params.getBool("DisableOpenpilotLongitudinal");
-  tuningLevel = parent->tuningLevel;
 
   QStringList detected;
-  if (hasPedal) detected << "comma Pedal";
+  if (parent->hasPedal) detected << "comma Pedal";
   if (parent->hasSDSU) detected << "SDSU";
   if (parent->hasZSS) detected << "ZSS";
   static_cast<LabelControl*>(toggles["HardwareDetected"])->setText(detected.isEmpty() ? tr("None") : detected.join(", "));
 
   static_cast<LabelControl*>(toggles["BlindSpotSupport"])->setText(parent->hasBSM ? tr("Yes") : tr("No"));
-  static_cast<LabelControl*>(toggles["OpenpilotLongitudinal"])->setText(hasOpenpilotLongitudinal ? tr("Yes") : tr("No"));
+  static_cast<LabelControl*>(toggles["OpenpilotLongitudinal"])->setText(parent->hasOpenpilotLongitudinal ? tr("Yes") : tr("No"));
   static_cast<LabelControl*>(toggles["PedalSupport"])->setText(parent->canUsePedal ? tr("Yes") : tr("No"));
   static_cast<LabelControl*>(toggles["RadarSupport"])->setText(parent->hasRadar ? tr("Yes") : tr("No"));
   static_cast<LabelControl*>(toggles["SDSUSupport"])->setText(parent->canUseSDSU ? tr("Yes") : tr("No"));
-  static_cast<LabelControl*>(toggles["SNGSupport"])->setText(hasSNG ? tr("Yes") : tr("No"));
+  static_cast<LabelControl*>(toggles["SNGSupport"])->setText(parent->hasSNG ? tr("Yes") : tr("No"));
 
   updateToggles();
 }
@@ -375,36 +361,36 @@ void FrogPilotVehiclesPanel::updateToggles() {
       continue;
     }
 
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= frogpilotToggleLevels[key].toDouble();
 
     if (gmKeys.contains(key)) {
-      setVisible &= isGM;
+      setVisible &= parent->isGM;
     } else if (hkgKeys.contains(key)) {
-      setVisible &= isHKG;
+      setVisible &= parent->isHKG;
     } else if (toyotaKeys.contains(key)) {
-      setVisible &= isToyota;
+      setVisible &= parent->isToyota;
     } else if (vehicleInfoKeys.contains(key)) {
       setVisible = true;
     }
 
     if (longitudinalKeys.contains(key)) {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     if (key == "LockDoorsTimer") {
-      setVisible &= !isC3;
+      setVisible &= !parent->isC3;
     }
 
     else if (key == "SNGHack") {
-      setVisible &= !hasPedal && !hasSNG;
+      setVisible &= !parent->hasPedal && !parent->hasSNG;
     }
 
     else if (key == "TacoTuneHacks") {
-      setVisible &= isHKGCanFd;
+      setVisible &= parent->isHKGCanFd;
     }
 
     else if (key == "VoltSNG") {
-      setVisible &= isVolt && !hasSNG;
+      setVisible &= parent->isVolt && !parent->hasSNG;
     }
 
     toggle->setVisible(setVisible);
@@ -422,8 +408,8 @@ void FrogPilotVehiclesPanel::updateToggles() {
     }
   }
 
-  disableOpenpilotLong->setVisible((hasOpenpilotLongitudinal || openpilotLongitudinalControlDisabled) && !hasExperimentalOpenpilotLongitudinal && tuningLevel >= frogpilotToggleLevels["DisableOpenpilotLongitudinal"].toDouble());
-  forceFingerprint->setVisible(tuningLevel >= frogpilotToggleLevels["ForceFingerprint"].toDouble());
+  disableOpenpilotLong->setVisible((parent->hasOpenpilotLongitudinal || parent->openpilotLongitudinalControlDisabled) && !parent->hasExperimentalOpenpilotLongitudinal && parent->tuningLevel >= frogpilotToggleLevels["DisableOpenpilotLongitudinal"].toBool());
+  forceFingerprint->setVisible(parent->tuningLevel >= frogpilotToggleLevels["ForceFingerprint"].toBool());
 
   openDescriptions(forceOpenDescriptions, toggles);
 

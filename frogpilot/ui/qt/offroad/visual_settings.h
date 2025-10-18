@@ -21,12 +21,6 @@ private:
 
   bool developerUIOpen;
   bool forceOpenDescriptions;
-  bool hasAutoTune;
-  bool hasBSM;
-  bool hasOpenpilotLongitudinal;
-  bool hasRadar;
-
-  int tuningLevel;
 
   std::map<QString, AbstractControl*> toggles;
 

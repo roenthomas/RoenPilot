@@ -19,11 +19,7 @@ private:
   void updateToggles();
 
   bool forceOpenDescriptions;
-  bool hasBSM;
-  bool hasOpenpilotLongitudinal;
   bool started;
-
-  int tuningLevel;
 
   std::map<QString, AbstractControl*> toggles;
 

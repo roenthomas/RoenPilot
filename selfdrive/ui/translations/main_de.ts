@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;Kehrt das Verhalten der Tempomat-Taste um&lt;/b&gt;, sodass ein kurzes Drücken die Sollgeschwindigkeit um 5 statt um 1 erhöht.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">Folgeabstand erhöhen um:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">Beschleunigung verringern um:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">Geschwindigkeit in Kurven reduzieren um:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">Schnee</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Fahranpassungen für Schneebedingungen.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Zusätzlichen Abstand hinter vorausfahrenden Fahrzeugen im Schnee hinzufügen.&lt;/b&gt; Erhöhen für mehr Abstand; verringern für geringere Lücken."</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Fügen Sie bei Schnee zusätzlichen Abstand ein, wenn Sie hinter Fahrzeugen anhalten.&lt;/b&gt; Erhöhen für mehr Abstand; verringern für kürzere Lücken.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Verringern Sie die maximale Beschleunigung im Schnee.&lt;/b&gt; Erhöhen für weichere Anfahrten; verringern für schnellere, aber weniger stabile Anfahrten.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Reduzieren Sie die gewünschte Geschwindigkeit beim Fahren durch Kurven im Schnee.&lt;/b&gt; Erhöhen für sicherere, sanftere Kurven; verringern für aggressiveres Fahren in Kurven.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">Geschwindigkeitsbegrenzungsregler</translation>
     </message>

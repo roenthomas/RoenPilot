@@ -169,9 +169,6 @@ FrogPilotSoundsPanel::FrogPilotSoundsPanel(FrogPilotSettingsWindow *parent) : Fr
 
 void FrogPilotSoundsPanel::showEvent(QShowEvent *event) {
   frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  hasBSM = parent->hasBSM;
-  hasOpenpilotLongitudinal = parent->hasOpenpilotLongitudinal;
-  tuningLevel = parent->tuningLevel;
 
   updateToggles();
 }
@@ -196,14 +193,14 @@ void FrogPilotSoundsPanel::updateToggles() {
       continue;
     }
 
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= frogpilotToggleLevels[key].toDouble();
 
     if (key == "LoudBlindspotAlert") {
-      setVisible &= hasBSM;
+      setVisible &= parent->hasBSM;
     }
 
     else if (key == "SpeedLimitChangedAlert") {
-      setVisible &= params.getBool("ShowSpeedLimits") || (hasOpenpilotLongitudinal && params.getBool("SpeedLimitController"));
+      setVisible &= params.getBool("ShowSpeedLimits") || (parent->hasOpenpilotLongitudinal && params.getBool("SpeedLimitController"));
     }
 
     toggle->setVisible(setVisible);

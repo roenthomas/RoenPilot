@@ -90,7 +90,7 @@ FrogPilotVisualsPanel::FrogPilotVisualsPanel(FrogPilotSettingsWindow *parent) : 
     {"PedalsOnUI", tr("Gas / Brake Pedal Indicators"), tr("<b>On-screen gas and brake indicators.</b><br><br><b>Dynamic</b>: Opacity changes according to how much openpilot is accelerating or braking<br><b>Static</b>: Full when active, dim when not"), ""},
     {"RotatingWheel", tr("Rotating Steering Wheel"), tr("<b>Rotate the driving screen wheel</b> with the physical steering wheel."), ""},
 
-    {"ModelUI", tr("Model UI"), tr("<b>Model visualizations</b> for the driving path, lane lines, path edges, and road edges."), "../../frogpilot/assets/toggle_icons/icon_vtc.png"},
+    {"ModelUI", tr("Model UI"), tr("<b>Model visualizations</b> for the driving path, lane lines, path edges, and road edges."), "../../frogpilot/assets/toggle_icons/icon_road.png"},
     {"DynamicPathWidth", tr("Dynamic Path Width"), tr("<b>Change the path width based on engagement.</b><br><br><b>Fully Engaged</b>: 100%<br><b>Always On Lateral</b>: 75%<br><b>Disengaged</b>: 50%"), ""},
     {"LaneLinesWidth", tr("Lane Lines Width"), tr("<b>Set the lane-line thickness.</b><br><br>Default matches the MUTCD lane-line width standard of 4 inches."), ""},
     {"PathEdgeWidth", tr("Path Edges Width"), tr("<b>Set the driving-path edge width</b> that represents different driving modes and statuses.<br><br>Default is 20% of the total path width.<br><br>Color Guide:<br><br>- <b>Blue</b>: Navigation<br>- <b>Light Blue</b>: Always On Lateral<br>- <b>Green</b>: Default<br>- <b>Orange</b>: Experimental Mode<br>- <b>Red</b>: Traffic Mode<br>- <b>Yellow</b>: Conditional Experimental Mode overridden"), ""},
@@ -405,11 +405,6 @@ FrogPilotVisualsPanel::FrogPilotVisualsPanel(FrogPilotSettingsWindow *parent) : 
 
 void FrogPilotVisualsPanel::showEvent(QShowEvent *event) {
   frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  hasAutoTune = parent->hasAutoTune;
-  hasBSM = parent->hasBSM;
-  hasOpenpilotLongitudinal = parent->hasOpenpilotLongitudinal;
-  hasRadar = parent->hasRadar;
-  tuningLevel = parent->tuningLevel;
 
   for (int i = 0; i < sidebarMetricsToggles.size(); ++i) {
     if (params.getBool(sidebarMetricsToggles[i].toStdString())) {
@@ -496,50 +491,50 @@ void FrogPilotVisualsPanel::updateToggles() {
       continue;
     }
 
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= frogpilotToggleLevels[key].toDouble();
 
     if (key == "AccelerationPath") {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "AdjacentLeadsUI") {
-      setVisible &= hasRadar && !(params.getBool("AdvancedCustomUI") && params.getBool("HideLeadMarker"));
+      setVisible &= parent->hasRadar && !(params.getBool("AdvancedCustomUI") && params.getBool("HideLeadMarker"));
     }
 
     else if (key == "BlindSpotPath") {
-      setVisible &= hasBSM;
+      setVisible &= parent->hasBSM;
     }
 
     else if (key == "HideLeadMarker") {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "LeadInfo") {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "OnroadDistanceButton") {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "PedalsOnUI") {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "RadarTracksUI") {
-      setVisible &= hasRadar;
+      setVisible &= parent->hasRadar;
     }
 
     else if (key == "ShowSpeedLimits") {
-      setVisible &= !params.getBool("SpeedLimitController") || !hasOpenpilotLongitudinal;
+      setVisible &= !params.getBool("SpeedLimitController") || !parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "ShowStoppingPoint") {
-      setVisible &= hasOpenpilotLongitudinal;
+      setVisible &= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "SLCMapboxFiller") {
-      setVisible &= params.getBool("ShowSpeedLimits") && !(hasOpenpilotLongitudinal && params.getBool("SpeedLimitController"));
+      setVisible &= params.getBool("ShowSpeedLimits") && !(parent->hasOpenpilotLongitudinal && params.getBool("SpeedLimitController"));
       setVisible &= !params.get("MapboxSecretKey").empty();
     }
 
@@ -566,7 +561,7 @@ void FrogPilotVisualsPanel::updateToggles() {
     }
   }
 
-  borderMetricsButton->setVisibleButton(0, hasBSM);
+  borderMetricsButton->setVisibleButton(0, parent->hasBSM);
 
   openDescriptions(forceOpenDescriptions, toggles);
 

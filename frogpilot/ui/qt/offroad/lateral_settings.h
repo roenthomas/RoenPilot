@@ -20,21 +20,7 @@ private:
   void updateToggles();
 
   bool forceOpenDescriptions;
-  bool hasAutoTune;
-  bool hasNNFFLog;
-  bool hasOpenpilotLongitudinal;
-  bool isAngleCar;
-  bool isHKGCanFd;
-  bool isTorqueCar;
   bool started;
-
-  float friction;
-  float latAccelFactor;
-  float steerActuatorDelay;
-  float steerKp;
-  float steerRatio;
-
-  int tuningLevel;
 
   std::map<QString, AbstractControl*> toggles;
 

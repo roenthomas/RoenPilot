@@ -17,10 +17,6 @@ private:
   void updateToggles();
 
   bool forceOpenDescriptions;
-  bool hasOpenpilotLongitudinal;
-  bool isSubaru;
-
-  int tuningLevel;
 
   std::map<QString, AbstractControl*> toggles;
 

@@ -364,9 +364,6 @@ void FrogPilotModelPanel::showEvent(QShowEvent *event) {
   FrogPilotUIState &fs = *frogpilotUIState();
   UIState &s = *uiState();
 
-  frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  tuningLevel = parent->tuningLevel;
-
   allModelsDownloading = params_memory.getBool("DownloadAllModels");
   modelDownloading = !params_memory.get("ModelDownloadProgress").empty();
   tinygradUpdate = params.getBool("TinygradUpdateAvailable");
@@ -557,7 +554,7 @@ void FrogPilotModelPanel::updateModelLabels(FrogPilotListWidget *labelsList) {
 
 void FrogPilotModelPanel::updateToggles() {
   for (auto &[key, toggle] : toggles) {
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= parent->frogpilotToggleLevels[key].toDouble();
 
     if (key == "ManageBlacklistedModels" || key == "ManageScores") {
       setVisible &= params.getBool("ModelRandomizer");

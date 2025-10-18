@@ -32,8 +32,8 @@ FrogPilotWheelPanel::FrogPilotWheelPanel(FrogPilotSettingsWindow *parent) : Frog
     };
 
     ButtonControl *wheelToggle = new ButtonControl(title, tr("SELECT"), desc);
-    QObject::connect(wheelToggle, &ButtonControl::clicked, [functionsMap, longitudinalFunctionsMap, key = param, wheelToggle, this]() mutable {
-      if (hasOpenpilotLongitudinal) {
+    QObject::connect(wheelToggle, &ButtonControl::clicked, [functionsMap, longitudinalFunctionsMap, key = param, parent, wheelToggle, this]() mutable {
+      if (parent->hasOpenpilotLongitudinal) {
         QMap<int, QString>::const_iterator it;
         for (it = longitudinalFunctionsMap.constBegin(); it != longitudinalFunctionsMap.constEnd(); ++it) {
           functionsMap[it.key()] = it.value();
@@ -71,19 +71,16 @@ FrogPilotWheelPanel::FrogPilotWheelPanel(FrogPilotSettingsWindow *parent) : Frog
 
 void FrogPilotWheelPanel::showEvent(QShowEvent *event) {
   frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  hasOpenpilotLongitudinal = parent->hasOpenpilotLongitudinal;
-  isSubaru = parent->isSubaru;
-  tuningLevel = parent->tuningLevel;
 
   updateToggles();
 }
 
 void FrogPilotWheelPanel::updateToggles() {
   for (auto &[key, toggle] : toggles) {
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= frogpilotToggleLevels[key].toDouble();
 
     if (key == "LKASButtonControl") {
-      setVisible &= !isSubaru;
+      setVisible &= !parent->isSubaru;
       setVisible &= !(params.getBool("AlwaysOnLateral") && params.getBool("AlwaysOnLateralLKAS"));
     }
 

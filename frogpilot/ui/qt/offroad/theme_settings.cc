@@ -712,7 +712,6 @@ void FrogPilotThemesPanel::showEvent(QShowEvent *event) {
   wheelsDownloaded = params.get("DownloadableWheels").empty();
 
   frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  tuningLevel = parent->tuningLevel;
 
   if (params.getBool("RandomThemes")) {
     manageCustomColorsButton->setValue("");
@@ -827,7 +826,7 @@ void FrogPilotThemesPanel::updateToggles() {
       continue;
     }
 
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= frogpilotToggleLevels[key].toDouble();
 
     if (key == "CustomDistanceIcons") {
       setVisible &= params.getBool("QOLVisuals") && params.getBool("OnroadDistanceButton");

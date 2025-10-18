@@ -39,11 +39,11 @@ FrogPilotLateralPanel::FrogPilotLateralPanel(FrogPilotSettingsWindow *parent) : 
 
   const std::vector<std::tuple<QString, QString, QString, QString>> lateralToggles {
     {"AdvancedLateralTune", tr("Advanced Lateral Tuning"), tr("<b>Advanced steering control changes to fine-tune how openpilot drives.</b>"), "../../frogpilot/assets/toggle_icons/icon_advanced_lateral_tune.png"},
-    {"SteerDelay", steerActuatorDelay != 0 ? QString(tr("Actuator Delay (Default: %1)")).arg(QString::number(steerActuatorDelay, 'f', 2)) : tr("Actuator Delay"), tr("<b>The time between openpilot's steering command and the vehicle's response.</b> Increase if the vehicle reacts late; decrease if it feels jumpy. Auto-learned by default."), ""},
-    {"SteerFriction", friction != 0 ? QString(tr("Friction (Default: %1)")).arg(QString::number(friction, 'f', 2)) : tr("Friction"), tr("<b>Compensates for steering friction.</b> Increase if the wheel sticks near center; decrease if it jitters. Auto-learned by default."), ""},
-    {"SteerKP", steerKp != 0 ? QString(tr("Kp Factor (Default: %1)")).arg(QString::number(steerKp, 'f', 2)) : tr("Kp Factor"), tr("<b>How strongly openpilot corrects lane position.</b> Higher is tighter but twitchier; lower is smoother but slower. Auto-learned by default."), ""},
-    {"SteerLatAccel", latAccelFactor != 0 ? QString(tr("Lateral Acceleration (Default: %1)")).arg(QString::number(latAccelFactor, 'f', 2)) : tr("Lateral Acceleration"), tr("<b>Maps steering torque to turning response.</b> Increase for sharper turns; decrease for gentler steering. Auto-learned by default."), ""},
-    {"SteerRatio", steerRatio != 0 ? QString(tr("Steer Ratio (Default: %1)")).arg(QString::number(steerRatio, 'f', 2)) : tr("Steer Ratio"), tr("<b>The relationship between steering wheel rotation and road wheel angle.</b> Increase if steering feels too quick or twitchy; decrease if it feels too slow or weak. Auto-learned by default."), ""},
+    {"SteerDelay", parent->steerActuatorDelay != 0 ? QString(tr("Actuator Delay (Default: %1)")).arg(QString::number(parent->steerActuatorDelay, 'f', 2)) : tr("Actuator Delay"), tr("<b>The time between openpilot's steering command and the vehicle's response.</b> Increase if the vehicle reacts late; decrease if it feels jumpy. Auto-learned by default."), ""},
+    {"SteerFriction", parent->friction != 0 ? QString(tr("Friction (Default: %1)")).arg(QString::number(parent->friction, 'f', 2)) : tr("Friction"), tr("<b>Compensates for steering friction.</b> Increase if the wheel sticks near center; decrease if it jitters. Auto-learned by default."), ""},
+    {"SteerKP", parent->steerKp != 0 ? QString(tr("Kp Factor (Default: %1)")).arg(QString::number(parent->steerKp, 'f', 2)) : tr("Kp Factor"), tr("<b>How strongly openpilot corrects lane position.</b> Higher is tighter but twitchier; lower is smoother but slower. Auto-learned by default."), ""},
+    {"SteerLatAccel", parent->latAccelFactor != 0 ? QString(tr("Lateral Acceleration (Default: %1)")).arg(QString::number(parent->latAccelFactor, 'f', 2)) : tr("Lateral Acceleration"), tr("<b>Maps steering torque to turning response.</b> Increase for sharper turns; decrease for gentler steering. Auto-learned by default."), ""},
+    {"SteerRatio", parent->steerRatio != 0 ? QString(tr("Steer Ratio (Default: %1)")).arg(QString::number(parent->steerRatio, 'f', 2)) : tr("Steer Ratio"), tr("<b>The relationship between steering wheel rotation and road wheel angle.</b> Increase if steering feels too quick or twitchy; decrease if it feels too slow or weak. Auto-learned by default."), ""},
     {"ForceAutoTune", tr("Force Auto-Tune On"), tr("<b>Force-enable openpilot's live auto-tuning for \"Friction\" and \"Lateral Acceleration\".</b>"), ""},
     {"ForceAutoTuneOff", tr("Force Auto-Tune Off"), tr("<b>Force-disable openpilot's live auto-tuning for \"Friction\" and \"Lateral Acceleration\" and use the set value instead.</b>"), ""},
     {"ForceTorqueController", tr("Force Torque Controller"), tr("<b>Use torque-based steering control instead of angle-based control for smoother lane keeping, especially in curves.</b>"), ""},
@@ -89,13 +89,13 @@ FrogPilotLateralPanel::FrogPilotLateralPanel(FrogPilotSettingsWindow *parent) : 
       lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, 0, 0.5, QString(), std::map<float, QString>(), 0.01, false, {}, steerFrictionButton, false, false);
     } else if (param == "SteerKP") {
       std::vector<QString> steerKPButton{"Reset"};
-      lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, steerKp * 0.5, steerKp * 1.5, QString(), std::map<float, QString>(), 0.01, false, {}, steerKPButton, false, false);
+      lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, parent->steerKp * 0.5, parent->steerKp * 1.5, QString(), std::map<float, QString>(), 0.01, false, {}, steerKPButton, false, false);
     } else if (param == "SteerLatAccel") {
       std::vector<QString> steerLatAccelButton{"Reset"};
-      lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, latAccelFactor * 0.75, latAccelFactor * 1.25, QString(), std::map<float, QString>(), 0.01, false, {}, steerLatAccelButton, false, false);
+      lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, parent->latAccelFactor * 0.75, parent->latAccelFactor * 1.25, QString(), std::map<float, QString>(), 0.01, false, {}, steerLatAccelButton, false, false);
     } else if (param == "SteerRatio") {
       std::vector<QString> steerRatioButton{"Reset"};
-      lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, steerRatio * 0.5, steerRatio * 1.5, QString(), std::map<float, QString>(), 0.01, false, {}, steerRatioButton, false, false);
+      lateralToggle = new FrogPilotParamValueButtonControl(param, title, desc, icon, parent->steerRatio * 0.5, parent->steerRatio * 1.5, QString(), std::map<float, QString>(), 0.01, false, {}, steerRatioButton, false, false);
 
     } else if (param == "AlwaysOnLateral") {
       FrogPilotManageControl *aolToggle = new FrogPilotManageControl(param, title, desc, icon);
@@ -191,12 +191,6 @@ FrogPilotLateralPanel::FrogPilotLateralPanel(FrogPilotSettingsWindow *parent) : 
           if (FrogPilotConfirmationDialog::toggleReboot(this)) {
             Hardware::reboot();
           }
-        } else if (key == "NNFF" || key == "NNFFLite") {
-          if (!isTorqueCar) {
-            if (FrogPilotConfirmationDialog::toggleReboot(this)) {
-              Hardware::reboot();
-            }
-          }
         } else if (key != "AlwaysOnLateral") {
           if (FrogPilotConfirmationDialog::toggleReboot(this)) {
             Hardware::reboot();
@@ -207,41 +201,41 @@ FrogPilotLateralPanel::FrogPilotLateralPanel(FrogPilotSettingsWindow *parent) : 
   }
 
   steerDelayToggle = static_cast<FrogPilotParamValueButtonControl*>(toggles["SteerDelay"]);
-  QObject::connect(steerDelayToggle, &FrogPilotParamValueButtonControl::buttonClicked, [this]() {
+  QObject::connect(steerDelayToggle, &FrogPilotParamValueButtonControl::buttonClicked, [parent, this]() {
     if (FrogPilotConfirmationDialog::yesorno(tr("Reset <b>Actuator Delay</b> to its default value?"), this)) {
-      params.putFloat("SteerDelay", steerActuatorDelay);
+      params.putFloat("SteerDelay", parent->steerActuatorDelay);
       steerDelayToggle->refresh();
     }
   });
 
   steerFrictionToggle = static_cast<FrogPilotParamValueButtonControl*>(toggles["SteerFriction"]);
-  QObject::connect(steerFrictionToggle, &FrogPilotParamValueButtonControl::buttonClicked, [this]() {
+  QObject::connect(steerFrictionToggle, &FrogPilotParamValueButtonControl::buttonClicked, [parent, this]() {
     if (FrogPilotConfirmationDialog::yesorno(tr("Reset <b>Friction</b> to its default value?"), this)) {
-      params.putFloat("SteerFriction", friction);
+      params.putFloat("SteerFriction", parent->friction);
       steerFrictionToggle->refresh();
     }
   });
 
   steerKPToggle = static_cast<FrogPilotParamValueButtonControl*>(toggles["SteerKP"]);
-  QObject::connect(steerKPToggle, &FrogPilotParamValueButtonControl::buttonClicked, [this]() {
+  QObject::connect(steerKPToggle, &FrogPilotParamValueButtonControl::buttonClicked, [parent, this]() {
     if (FrogPilotConfirmationDialog::yesorno(tr("Reset <b>Kp Factor</b> to its default value?"), this)) {
-      params.putFloat("SteerKP", steerKp);
+      params.putFloat("SteerKP", parent->steerKp);
       steerKPToggle->refresh();
     }
   });
 
   steerLatAccelToggle = static_cast<FrogPilotParamValueButtonControl*>(toggles["SteerLatAccel"]);
-  QObject::connect(steerLatAccelToggle, &FrogPilotParamValueButtonControl::buttonClicked, [this]() {
+  QObject::connect(steerLatAccelToggle, &FrogPilotParamValueButtonControl::buttonClicked, [parent, this]() {
     if (FrogPilotConfirmationDialog::yesorno(tr("Reset <b>Lateral Accel</b> to its default value?"), this)) {
-      params.putFloat("SteerLatAccel", latAccelFactor);
+      params.putFloat("SteerLatAccel", parent->latAccelFactor);
       steerLatAccelToggle->refresh();
     }
   });
 
   steerRatioToggle = static_cast<FrogPilotParamValueButtonControl*>(toggles["SteerRatio"]);
-  QObject::connect(steerRatioToggle, &FrogPilotParamValueButtonControl::buttonClicked, [this]() {
+  QObject::connect(steerRatioToggle, &FrogPilotParamValueButtonControl::buttonClicked, [parent, this]() {
     if (FrogPilotConfirmationDialog::yesorno(tr("Reset <b>Steer Ratio</b> to its default value?"), this)) {
-      params.putFloat("SteerRatio", steerRatio);
+      params.putFloat("SteerRatio", parent->steerRatio);
       steerRatioToggle->refresh();
     }
   });
@@ -258,27 +252,15 @@ FrogPilotLateralPanel::FrogPilotLateralPanel(FrogPilotSettingsWindow *parent) : 
 
 void FrogPilotLateralPanel::showEvent(QShowEvent *event) {
   frogpilotToggleLevels = parent->frogpilotToggleLevels;
-  friction = parent->friction;
-  hasAutoTune = parent->hasAutoTune;
-  hasNNFFLog = parent->hasNNFFLog;
-  hasOpenpilotLongitudinal = parent->hasOpenpilotLongitudinal;
-  isAngleCar = parent->isAngleCar;
-  isHKGCanFd = parent->isHKGCanFd;
-  isTorqueCar = parent->isTorqueCar;
-  latAccelFactor = parent->latAccelFactor;
-  steerActuatorDelay = parent->steerActuatorDelay;
-  steerKp = parent->steerKp;
-  steerRatio = parent->steerRatio;
-  tuningLevel = parent->tuningLevel;
 
-  steerDelayToggle->setTitle(QString(tr("Actuator Delay (Default: %1)")).arg(QString::number(steerActuatorDelay, 'f', 2)));
-  steerFrictionToggle->setTitle(QString(tr("Friction (Default: %1)")).arg(QString::number(friction, 'f', 2)));
-  steerKPToggle->setTitle(QString(tr("Kp Factor (Default: %1)")).arg(QString::number(steerKp, 'f', 2)));
-  steerKPToggle->updateControl(steerKp * 0.5, steerKp * 1.5);
-  steerLatAccelToggle->setTitle(QString(tr("Lateral Accel (Default: %1)")).arg(QString::number(latAccelFactor, 'f', 2)));
-  steerLatAccelToggle->updateControl(latAccelFactor * 0.75, latAccelFactor * 1.25);
-  steerRatioToggle->setTitle(QString(tr("Steer Ratio (Default: %1)")).arg(QString::number(steerRatio, 'f', 2)));
-  steerRatioToggle->updateControl(steerRatio * 0.5, steerRatio * 1.5);
+  steerDelayToggle->setTitle(QString(tr("Actuator Delay (Default: %1)")).arg(QString::number(parent->steerActuatorDelay, 'f', 2)));
+  steerFrictionToggle->setTitle(QString(tr("Friction (Default: %1)")).arg(QString::number(parent->friction, 'f', 2)));
+  steerKPToggle->setTitle(QString(tr("Kp Factor (Default: %1)")).arg(QString::number(parent->steerKp, 'f', 2)));
+  steerKPToggle->updateControl(parent->steerKp * 0.5, parent->steerKp * 1.5);
+  steerLatAccelToggle->setTitle(QString(tr("Lateral Accel (Default: %1)")).arg(QString::number(parent->latAccelFactor, 'f', 2)));
+  steerLatAccelToggle->updateControl(parent->latAccelFactor * 0.75, parent->latAccelFactor * 1.25);
+  steerRatioToggle->setTitle(QString(tr("Steer Ratio (Default: %1)")).arg(QString::number(parent->steerRatio, 'f', 2)));
+  steerRatioToggle->updateControl(parent->steerRatio * 0.5, parent->steerRatio * 1.5);
 
   updateToggles();
 }
@@ -358,41 +340,41 @@ void FrogPilotLateralPanel::updateToggles() {
     }
   }
 
-  bool forcingAutoTune = !hasAutoTune && params.getBool("ForceAutoTune");
-  bool forcingAutoTuneOff = hasAutoTune && params.getBool("ForceAutoTuneOff");
-  bool forcingTorqueController = !isAngleCar && params.getBool("ForceTorqueController");
-  bool usingNNFF = hasNNFFLog && params.getBool("LateralTune") && params.getBool("NNFF");
+  bool forcingAutoTune = !parent->hasAutoTune && params.getBool("ForceAutoTune");
+  bool forcingAutoTuneOff = parent->hasAutoTune && params.getBool("ForceAutoTuneOff");
+  bool forcingTorqueController = !parent->isAngleCar && params.getBool("ForceTorqueController");
+  bool usingNNFF = parent->hasNNFFLog && params.getBool("LateralTune") && params.getBool("NNFF");
 
   for (auto &[key, toggle] : toggles) {
     if (parentKeys.contains(key)) {
       continue;
     }
 
-    bool setVisible = tuningLevel >= frogpilotToggleLevels[key].toDouble();
+    bool setVisible = parent->tuningLevel >= frogpilotToggleLevels[key].toDouble();
 
     if (key == "AlwaysOnLateralLKAS") {
-      setVisible &= isHKGCanFd;
-      setVisible &= !hasOpenpilotLongitudinal;
+      setVisible &= parent->isHKGCanFd;
+      setVisible &= !parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "AlwaysOnLateralMain") {
-      setVisible &= !isHKGCanFd;
-      setVisible |= hasOpenpilotLongitudinal;
+      setVisible &= !parent->isHKGCanFd;
+      setVisible |= parent->hasOpenpilotLongitudinal;
     }
 
     else if (key == "ForceAutoTune") {
-      setVisible &= !hasAutoTune;
-      setVisible &= !isAngleCar;
-      setVisible &= isTorqueCar || forcingTorqueController;
+      setVisible &= !parent->hasAutoTune;
+      setVisible &= !parent->isAngleCar;
+      setVisible &= parent->isTorqueCar || forcingTorqueController;
     }
 
     else if (key == "ForceAutoTuneOff") {
-      setVisible &= hasAutoTune;
+      setVisible &= parent->hasAutoTune;
     }
 
     else if (key == "ForceTorqueController") {
-      setVisible &= !isAngleCar;
-      setVisible &= !isTorqueCar;
+      setVisible &= !parent->isAngleCar;
+      setVisible &= !parent->isTorqueCar;
     }
 
     else if (key == "LaneChangeTime") {
@@ -404,42 +386,42 @@ void FrogPilotLateralPanel::updateToggles() {
     }
 
     else if (key == "NNFF") {
-      setVisible &= hasNNFFLog;
-      setVisible &= !isAngleCar;
+      setVisible &= parent->hasNNFFLog;
+      setVisible &= !parent->isAngleCar;
     }
 
     else if (key == "NNFFLite") {
       setVisible &= !usingNNFF;
-      setVisible &= !isAngleCar;
+      setVisible &= !parent->isAngleCar;
     }
 
     else if (key == "SteerDelay") {
-      setVisible &= steerActuatorDelay != 0;
+      setVisible &= parent->steerActuatorDelay != 0;
     }
 
     else if (key == "SteerFriction") {
-      setVisible &= friction != 0;
-      setVisible &= hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
-      setVisible &= isTorqueCar || forcingTorqueController;
+      setVisible &= parent->friction != 0;
+      setVisible &= parent->hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
+      setVisible &= parent->isTorqueCar || forcingTorqueController;
       setVisible &= !usingNNFF;
     }
 
     else if (key == "SteerKP") {
-      setVisible &= steerKp != 0;
-      setVisible &= hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
-      setVisible &= isTorqueCar || forcingTorqueController;
+      setVisible &= parent->steerKp != 0;
+      setVisible &= parent->hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
+      setVisible &= parent->isTorqueCar || forcingTorqueController;
     }
 
     else if (key == "SteerLatAccel") {
-      setVisible &= latAccelFactor != 0;
-      setVisible &= hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
-      setVisible &= isTorqueCar || forcingTorqueController;
+      setVisible &= parent->latAccelFactor != 0;
+      setVisible &= parent->hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
+      setVisible &= parent->isTorqueCar || forcingTorqueController;
       setVisible &= !usingNNFF;
     }
 
     else if (key == "SteerRatio") {
-      setVisible &= steerRatio != 0;
-      setVisible &= hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
+      setVisible &= parent->steerRatio != 0;
+      setVisible &= parent->hasAutoTune ? forcingAutoTuneOff : !forcingAutoTune;
     }
 
     toggle->setVisible(setVisible);

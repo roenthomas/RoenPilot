@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;Ribbit! Flip the cruise control button’s ways&lt;/b&gt; so a quick tap croaks the set speed up by 5, not 1.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">Ribbit! Increase Following Distance by: croak!</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">Ribbit! Trim acceleration by: Croak!</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">Ribbit! Reduce speed in curves by: croak!</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">Ribbit! Snow croaks and falls.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Ribbit! Driving tweaks for snowy roads.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Ribbit! Add extra lily-pad space behind lead vehicles in snow.&lt;/b&gt; Increase to hop more space; decrease for tighter gaps, croak.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Ribbit! Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Croak—increase for more room; decrease for shorter gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Ribbit! Lower the max zoom in snow.&lt;/b&gt; Croak—more for soft hop-offs; less for quick but wobbly hop-offs.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Ribbit! Lower the desired speed when hopping through snowy curves.&lt;/b&gt; Croak—raise it for safer, gentler turns; drop it for bolder, more aggressive curve-hopping.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">Ribbit Speed Limit Controller, croak!</translation>
     </message>

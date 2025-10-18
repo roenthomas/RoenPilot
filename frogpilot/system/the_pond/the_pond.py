@@ -32,11 +32,9 @@ from panda import Panda
 
 from openpilot.frogpilot.assets.theme_manager import HOLIDAY_THEME_PATH, THEME_COMPONENT_PARAMS
 from openpilot.frogpilot.common.frogpilot_utilities import delete_file, get_lock_status, run_cmd, extract_tar
-from openpilot.frogpilot.common.frogpilot_variables import ACTIVE_THEME_PATH, ERROR_LOGS_PATH, EXCLUDED_KEYS, RESOURCES_REPO, SCREEN_RECORDINGS_PATH, THEME_SAVE_PATH,\
+from openpilot.frogpilot.common.frogpilot_variables import ACTIVE_THEME_PATH, DISCORD_WEBHOOK_URL_THEME, ERROR_LOGS_PATH, EXCLUDED_KEYS, RESOURCES_REPO, SCREEN_RECORDINGS_PATH, THEME_SAVE_PATH,\
                                                            frogpilot_default_params, params, params_memory, update_frogpilot_toggles
 from openpilot.frogpilot.system.the_pond import utilities
-
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 GITLAB_API = "https://gitlab.com/api/v4"
 GITLAB_SUBMISSIONS_PROJECT_ID = "71992109"
@@ -1281,7 +1279,7 @@ def setup(app):
           return base64.b64encode(f.read()).decode("utf-8")
 
       def send_discord_notification(username, theme_name, asset_types):
-        if not DISCORD_WEBHOOK_URL:
+        if not DISCORD_WEBHOOK_URL_THEME:
           return
 
         message = (
@@ -1294,7 +1292,7 @@ def setup(app):
         )
         payload = {"content": message}
         try:
-          resp = requests.post(DISCORD_WEBHOOK_URL, json=payload)
+          resp = requests.post(DISCORD_WEBHOOK_URL_THEME, json=payload)
           if resp.status_code not in (200, 204):
             print(f"Discord notification failed: {resp.status_code} {resp.text}")
         except Exception as exception:

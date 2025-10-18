@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;反转巡航控制按钮行为&lt;/b&gt;，使短按将设定速度增加 5 而不是 1。</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">将跟车距离增加：</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">减少加速度：</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">在弯道将车速降低：</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">雪</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;在积雪条件下的驾驶调整。&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;在积雪中与前车保持更大车距。&lt;/b&gt; 增大以扩大间距；减小以缩小间隙。</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;在雪天跟车停止时加大额外缓冲。&lt;/b&gt; 增大以获得更多空间；减小以缩短车距。</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;在雪地中降低最大加速度。&lt;/b&gt; 增加以获得更柔和的起步；减少以获得更快但稳定性较差的起步。</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;在雪中通过弯道时降低期望车速。&lt;/b&gt; 提高可实现更安全、更平顺的转弯；降低则在弯道中更激进驾驶。</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">限速控制器</translation>
     </message>

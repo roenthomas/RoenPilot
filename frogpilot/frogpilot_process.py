@@ -4,8 +4,6 @@ import json
 import os
 import time
 
-import openpilot.system.sentry as sentry
-
 from cereal import messaging
 from openpilot.common.realtime import DT_MDL, Priority, Ratekeeper, config_realtime_process
 from openpilot.common.time import system_time_valid
@@ -13,7 +11,7 @@ from openpilot.common.time import system_time_valid
 from openpilot.frogpilot.assets.model_manager import MODEL_DOWNLOAD_ALL_PARAM, MODEL_DOWNLOAD_PARAM, ModelManager
 from openpilot.frogpilot.assets.theme_manager import THEME_COMPONENT_PARAMS, ThemeManager
 from openpilot.frogpilot.common.frogpilot_functions import backup_toggles
-from openpilot.frogpilot.common.frogpilot_utilities import flash_panda, is_url_pingable, lock_doors, run_thread_with_lock, update_maps, update_openpilot
+from openpilot.frogpilot.common.frogpilot_utilities import capture_report, flash_panda, is_url_pingable, lock_doors, run_thread_with_lock, update_maps, update_openpilot
 from openpilot.frogpilot.common.frogpilot_variables import ERROR_LOGS_PATH, FrogPilotVariables, get_frogpilot_toggles, params, params_cache, params_memory
 from openpilot.frogpilot.controls.frogpilot_planner import FrogPilotPlanner
 from openpilot.frogpilot.controls.lib.frogpilot_tracking import FrogPilotTracking
@@ -36,7 +34,7 @@ def assets_checks(model_manager, theme_manager, frogpilot_toggles):
 
   report_data = json.loads(params_memory.get("IssueReported", encoding="utf-8") or "{}")
   if report_data:
-    sentry.capture_report(report_data["DiscordUser"], report_data["Issue"], vars(frogpilot_toggles))
+    capture_report(report_data["DiscordUser"], report_data["Issue"], vars(frogpilot_toggles))
     params_memory.remove("IssueReported")
 
   for asset_type, asset_param in THEME_COMPONENT_PARAMS.items():

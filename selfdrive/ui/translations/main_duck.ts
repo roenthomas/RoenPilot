@@ -1654,42 +1654,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;Quack! Flip the cruise control button behavior&lt;/b&gt; so a short press bumps set speed by 5, not 1.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">Quack! Increase Following Distance by: waddle!</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">Quack! Waddle down acceleration by:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">Quack! Waddle down speed in curves by:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">Quack Snow!</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Quack! Driving tweaks for snowy waddles.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Quack! Add extra space behind lead vehicles in snow.&lt;/b&gt; Waddle it up for more space; paddle it down for tighter gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Quack! Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Waddle it up for more room; waddle it down for shorter gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Quack! Lower the max zoom-zoom in snow.&lt;/b&gt; Waddle it up for softer takeoffs; waddle it down for quicker but wobblier takeoffs, quack.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Quack! Lower desired speed when waddling through snowy curves.&lt;/b&gt; Increase for safer, gentler turns—quack; decrease for more feisty curve-quacks.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">Quack! Speed Limit Controller, waddle-waddle!</translation>
     </message>

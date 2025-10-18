@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;クルーズコントロールボタンの動作を反転&lt;/b&gt;し、短押しで設定速度を1ではなく5増加させます。</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">追従距離を増やす:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">加速度を次の値だけ下げる:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">カーブでの速度を次の値だけ減速:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">雪</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;雪道における運転調整。&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;雪道では先行車との車間を広めに取ります。&lt;/b&gt; 増やすと車間が広がり、減らすと間隔が狭くなります。</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;雪道で前車の後ろに停止する際は余裕を多めに取ってください。&lt;/b&gt; 増やすと距離が広がり、減らすと間隔が短くなります。</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;雪道では最大加速度を下げてください。&lt;/b&gt; 穏やかな発進には上げ、素早いが安定性に劣る発進には下げます。</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;雪道のカーブ走行時は希望速度を下げてください。&lt;/b&gt; 安全で穏やかな旋回には上げ、カーブでより積極的に走行する場合は下げてください。</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">速度制限コントローラー</translation>
     </message>

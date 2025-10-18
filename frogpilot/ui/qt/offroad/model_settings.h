@@ -32,8 +32,6 @@ private:
   bool tinygradUpdate;
   bool updatingTinygrad;
 
-  int tuningLevel;
-
   std::map<QString, AbstractControl*> toggles;
 
   ButtonControl *selectModelButton;
@@ -50,8 +48,6 @@ private:
   Params params_memory{"/dev/shm/params"};
 
   QDir modelDir{"/data/models/"};
-
-  QJsonObject frogpilotToggleLevels;
 
   QMap<QString, QString> modelFileToNameMap;
   QMap<QString, QString> modelFileToNameMapProcessed;

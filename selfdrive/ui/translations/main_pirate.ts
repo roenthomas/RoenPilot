@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;Flip th’ cruise control button’s ways&lt;/b&gt; so a quick tap boosts set speed by 5 ‘stead o’ 1.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">Boost Yer Followin’ Distance by:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">Trim the throttle by:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">Reef Yer Speed in Curves by:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">Snowy seas</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Drivin’ tweaks fer snowy seas ashore.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Add extra berth aft o’ lead vessels in snow.&lt;/b&gt; Increase fer more space; decrease fer tighter gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Be addin’ extra buffer when ye be stopped abaft other vessels in snow.&lt;/b&gt; Raise it fer more berth; lower it fer tighter gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Reef the max shove in snow, matey.&lt;/b&gt; Raise it fer softer shove-offs; drop it fer quicker but less steady shove-offs.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Lower yer wished speed while sailin’ through curves in snow.&lt;/b&gt; Raise it fer safer, gentler turns; drop it fer more swashbucklin’, aggressive drivin’ in curves.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">Speed Limit Helmsman</translation>
     </message>

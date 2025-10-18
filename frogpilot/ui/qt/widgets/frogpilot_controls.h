@@ -2,6 +2,12 @@
 
 #include <cmath>
 
+#include <QFile>
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QMovie>
+#include <QRegularExpression>
 #include <QTimer>
 
 #include "selfdrive/ui/qt/util.h"

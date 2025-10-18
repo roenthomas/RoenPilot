@@ -19,20 +19,7 @@ private:
   void updateToggles();
 
   bool forceOpenDescriptions;
-  bool hasExperimentalOpenpilotLongitudinal;
-  bool hasOpenpilotLongitudinal;
-  bool hasPedal;
-  bool hasSNG;
-  bool isC3;
-  bool isGM;
-  bool isHKG;
-  bool isHKGCanFd;
-  bool isToyota;
-  bool isVolt;
-  bool openpilotLongitudinalControlDisabled;
   bool started;
-
-  int tuningLevel;
 
   std::map<QString, AbstractControl*> toggles;
 

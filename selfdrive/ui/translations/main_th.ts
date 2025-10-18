@@ -1652,42 +1652,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;สลับพฤติกรรมปุ่มควบคุมครูซ&lt;/b&gt; เพื่อให้การกดสั้นเพิ่มความเร็วที่ตั้งไว้ทีละ 5 แทน 1</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">เพิ่มระยะห่างการติดตามโดย:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">ลดความเร่งลงโดย:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">ลดความเร็วในทางโค้งโดย:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">หิมะ</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;การปรับการขับขี่สำหรับสภาพหิมะ&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;เพิ่มระยะเผื่อด้านหลังรถคันหน้าเมื่อมีหิมะ&lt;/b&gt; เพิ่มเพื่อให้มีระยะมากขึ้น ลดเพื่อให้ช่องว่างแคบลง</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;เพิ่มระยะเผื่อพิเศษเมื่อหยุดหลังรถคันหน้าในหิมะ&lt;/b&gt; เพิ่มเพื่อให้มีพื้นที่มากขึ้น; ลดเพื่อให้ช่องว่างสั้นลง</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;ลดอัตราเร่งสูงสุดเมื่อมีหิมะ&lt;/b&gt; เพิ่มเพื่อให้การออกตัวนุ่มนวลขึ้น; ลดเพื่อให้ออกตัวได้เร็วขึ้นแต่เสถียรน้อยลง</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;ลดความเร็วที่ต้องการขณะขับผ่านโค้งในหิมะ&lt;/b&gt; เพิ่มเพื่อการเข้าโค้งที่ปลอดภัยและนุ่มนวลขึ้น; ลดเพื่อการขับขี่ที่ดุดันมากขึ้นในโค้ง.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">ตัวควบคุมจำกัดความเร็ว</translation>
     </message>

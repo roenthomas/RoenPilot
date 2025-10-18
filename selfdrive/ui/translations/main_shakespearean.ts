@@ -1656,44 +1656,6 @@
         <translation type="gpt-5-generated">&lt;b&gt;Invert the cruise control button’s wont&lt;/b&gt; that a brief press doth raise the set speed by 5 instead of 1.</translation>
     </message>
     <message>
-        <source>Increase Following Distance by:</source>
-        <translation type="gpt-5-generated">Increase the Following Distance by:</translation>
-    </message>
-    <message>
-        <source>Reduce Acceleration by:</source>
-        <translation type="gpt-5-generated">Abate Acceleration by:</translation>
-    </message>
-    <message>
-        <source>Reduce Speed in Curves by:</source>
-        <translation type="gpt-5-generated">Abate Thy Speed in Curves by:</translation>
-    </message>
-    <message>
-        <source>Snow</source>
-        <translation type="gpt-5-generated">Snow
-
-</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Driving adjustments for snowy conditions.&lt;/b&gt;</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Chariot-taming adjustments for snowy climes.&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra space behind lead vehicles in snow.&lt;/b&gt; Increase for more space; decrease for tighter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Add extra space behind lead carriages in snow.&lt;/b&gt; Increase for more breadth; decrease for closer gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Add extra buffer when stopped behind vehicles in snow.&lt;/b&gt; Increase for more room; decrease for shorter gaps.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Add extra buffer when halted behind carriages in snow.&lt;/b&gt; Increase for more breadth; decrease for shorter gaps.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the maximum acceleration in snow.&lt;/b&gt; Increase for softer takeoffs; decrease for quicker but less stable takeoffs.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Abate the utmost acceleration in snow.&lt;/b&gt; Increase for gentler departures; decrease for swifter yet less steadfast departures.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Lower the desired speed while driving through curves in snow.&lt;/b&gt; Increase for safer, gentler turns; decrease for more aggressive driving in curves.</source>
-        <translation type="gpt-5-generated">&lt;b&gt;Whilst thou driv’st through snowy bends, lower thy desir’d speed.&lt;/b&gt; Increase it for safer, gentler turns; decrease it for more bold, aggressive coursing through curves.</translation>
-    </message>
-    <message>
         <source>Speed Limit Controller</source>
         <translation type="gpt-5-generated">Speed Limit Controller</translation>
     </message>

@@ -57,20 +57,6 @@ def capture_exception(*args, crash_log=True, **kwargs) -> None:
     cloudlog.exception("sentry exception")
 
 
-def capture_report(discord_user, report, frogpilot_toggles):
-  error_file_path = ERROR_LOGS_PATH / "error.txt"
-  error_content = "No error log found."
-
-  if error_file_path.exists():
-    error_content = error_file_path.read_text()
-
-  with sentry_sdk.push_scope() as scope:
-    scope.set_context("Error Log", {"content": error_content})
-    scope.set_context("Toggle Values", frogpilot_toggles)
-    sentry_sdk.capture_message(f"{discord_user} submitted report: {report}", level="fatal")
-    sentry_sdk.flush()
-
-
 def set_tag(key: str, value: str) -> None:
   sentry_sdk.set_tag(key, value)
 
