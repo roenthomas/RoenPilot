@@ -1,5 +1,5 @@
 import os
-import numpy as np
+from numpy import array
 import tomllib
 from abc import abstractmethod, ABC
 from enum import StrEnum
@@ -468,7 +468,7 @@ class CarStateBase(ABC):
     A = [[1.0, DT_CTRL], [0.0, 1.0]]
     C = [[1.0, 0.0]]
     x0=[[0.0], [0.0]]
-    K = get_kalman_gain(DT_CTRL, np.array(A), np.array(C), np.array(Q), R)
+    K = get_kalman_gain(DT_CTRL, array(A), array(C), array(Q), R)
     self.v_ego_kf = KF1D(x0=x0, A=A, C=C[0], K=K)
 
     # FrogPilot variables
