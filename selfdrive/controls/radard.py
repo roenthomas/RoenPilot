@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import importlib
-import math
+from math import exp
+# from numpy import matrix
 from collections import deque
 from types import SimpleNamespace
 from typing import Any
@@ -37,9 +38,9 @@ class KalmanParams:
     assert dt > .01 and dt < .2, "Radar time step must be between .01s and 0.2s"
     self.A = [[1.0, dt], [0.0, 1.0]]
     self.C = [1.0, 0.0]
-    #Q = np.matrix([[10., 0.0], [0.0, 100.]])
+    #Q = matrix([[10., 0.0], [0.0, 100.]])
     #R = 1e3
-    #K = np.matrix([[ 0.05705578], [ 0.03073241]])
+    #K = matrix([[ 0.05705578], [ 0.03073241]])
     dts = [dt * 0.01 for dt in range(1, 21)]
     K0 = [0.12287673, 0.14556536, 0.16522756, 0.18281627, 0.1988689,  0.21372394,
           0.22761098, 0.24069424, 0.253096,   0.26491023, 0.27621103, 0.28705801,
@@ -155,7 +156,7 @@ class Track:
 
 def laplacian_pdf(x: float, mu: float, b: float):
   b = max(b, 1e-4)
-  return math.exp(-abs(x-mu)/b)
+  return exp(-abs(x-mu)/b)
 
 
 def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, tracks: dict[int, Track]):
