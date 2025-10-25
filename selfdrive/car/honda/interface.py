@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from numpy import sign
+
 from cereal import car, custom
 from panda import Panda
 from openpilot.common.conversions import Conversions as CV
@@ -7,7 +9,7 @@ from openpilot.selfdrive.car.honda.hondacan import CanBus
 from openpilot.selfdrive.car.honda.values import CarControllerParams, CruiseButtons, CruiseSettings, HondaFlags, CAR, HONDA_BOSCH, \
                                                  HONDA_NIDEC_ALT_SCM_MESSAGES, HONDA_BOSCH_RADARLESS
 from openpilot.selfdrive.car import create_button_events, get_safety_config
-from openpilot.selfdrive.car.interfaces import CarInterfaceBase
+from openpilot.selfdrive.car.interfaces import CarInterfaceBase, TorqueFromLateralAccelCallbackType, LateralAccelFromTorqueCallbackType
 from openpilot.selfdrive.car.disable_ecu import disable_ecu
 
 
@@ -19,6 +21,15 @@ BUTTONS_DICT = {CruiseButtons.RES_ACCEL: ButtonType.accelCruise, CruiseButtons.D
                 CruiseButtons.MAIN: ButtonType.altButton3, CruiseButtons.CANCEL: ButtonType.cancel}
 SETTINGS_BUTTONS_DICT = {CruiseSettings.DISTANCE: ButtonType.gapAdjustCruise, CruiseSettings.LKAS: ButtonType.altButton1}
 
+threshold = 0.9
+# 0.8 is intuitive since modded torque only occurs after 80% of max torque, but due to total system lag, 0.9 seems to trace curves the smoothest without going into too much steering
+mod_factor = 2.0 # <-- CHANGE THIS
+# as per Aragon, raise lateral acceleration factor = torque gets spread out over a larger surface area
+# lowering = it’s reduced over the surface area and thus you turn early
+# Raise mod_factor will only affect the way the modded part of the torque curve responds,
+# so it’s a more straightforward solution so you don’t mess up accuracy while driving straight or at low torque instances
+
+# The default is a linear relationship between torque and lateral acceleration (accounting for road roll and steering friction)
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
@@ -33,6 +44,41 @@ class CarInterface(CarInterfaceBase):
       ACCEL_MAX_VALS = [CarControllerParams.NIDEC_ACCEL_MAX, 0.2]
       ACCEL_MAX_BP = [cruise_speed - 2., cruise_speed - .2]
       return CarControllerParams.NIDEC_ACCEL_MIN, interp(current_speed, ACCEL_MAX_BP, ACCEL_MAX_VALS)
+  
+  def torque_from_lateral_accel_modded(self, lateral_acceleration: float, torque_params: car.CarParams.LateralTorqueTuning) -> float:
+    threshold_lat_accel = 1/torque_params.latAccelFactor * threshold
+    if abs(lateral_acceleration) > threshold_lat_accel:
+      modded_lat_accel_factor = float(torque_params.latAccelFactor) * mod_factor
+      excess_lat_accel = abs(lateral_acceleration) - threshold_lat_accel
+      torque = float(sign(lateral_acceleration)) * threshold_lat_accel / float(torque_params.latAccelFactor)
+      torque += float(sign(lateral_acceleration)) * excess_lat_accel / modded_lat_accel_factor
+    else:
+      torque = lateral_acceleration / float(torque_params.latAccelFactor)
+    return torque
+
+  def torque_from_lateral_accel(self) -> TorqueFromLateralAccelCallbackType:
+    if self.CP.flags & HondaFrogPilotFlags.EPS_MODIFIED:
+      return self.torque_from_lateral_accel_modded
+    else:
+      return self.torque_from_lateral_accel_linear
+  
+  def lateral_accel_from_torque_modded(self, torque: float, torque_params: car.CarParams.LateralTorqueTuning) -> float:
+    threshold_torque = torque_params.latAccelFactor * threshold
+    if abs(torque) > threshold_torque:
+      modded_torque_factor = float(torque_params.latAccelFactor) * mod_factor
+      excess_torque = abs(torque) - threshold_torque
+      lateral_acceleration = float(sign(torque)) * threshold_torque * float(torque_params.latAccelFactor)
+      lateral_acceleration += float(sign(torque)) * excess_torque / modded_torque_factor
+    else:
+      lateral_acceleration = torque * float(torque_params.latAccelFactor)    
+    return lateral_acceleration
+  
+  def lateral_accel_from_torque(self) -> LateralAccelFromTorqueCallbackType:
+    if self.CP.flags & HondaFrogPilotFlags.EPS_MODIFIED:
+      return self.lateral_accel_from_torque_modded
+    else:
+      return self.lateral_accel_from_torque_linear
+
 
   @staticmethod
   def _get_params(ret, candidate, fingerprint, car_fw, experimental_long, docs, frogpilot_toggles):
