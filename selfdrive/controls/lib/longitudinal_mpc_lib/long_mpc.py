@@ -146,14 +146,14 @@ def get_T_FOLLOW(aggressive_follow=1.25, standard_follow=1.45, relaxed_follow=1.
       raise NotImplementedError("Longitudinal personality not supported")
 
 def get_stopped_equivalence_factor(v_lead):
-  return (v_lead**2) / (2 * COMFORT_BRAKE)
+  return (v_lead * v_lead) / (2 * COMFORT_BRAKE)
 
 def get_safe_obstacle_distance(v_ego, t_follow):
   from openpilot.common.params import Params
   params = Params()
   stop_str = params.get("StopDistance", encoding="utf8")
   stop_distance = float(stop_str) if stop_str else 6.0
-  return (v_ego**2) / (2 * COMFORT_BRAKE) + t_follow * v_ego + stop_distance
+  return (v_ego * v_ego) / (2 * COMFORT_BRAKE) + t_follow * v_ego + stop_distance
 
 def desired_follow_distance(v_ego, v_lead, t_follow=None):
   if t_follow is None:
@@ -462,7 +462,7 @@ class LongitudinalMpc:
 
     if exp_weight > 0:
       # Exponential decay component
-      a_lead_traj_exp = a_lead * np.exp(-a_lead_tau * (T_IDXS**2)/2.)
+      a_lead_traj_exp = a_lead * np.exp(-a_lead_tau * (T_IDXS * T_IDXS)/2.)
       v_lead_traj_exp = np.clip(v_lead + np.cumsum(T_DIFFS * a_lead_traj_exp), 0.0, 1e8)
       x_lead_traj_exp = x_lead + np.cumsum(T_DIFFS * v_lead_traj_exp)
     else:
