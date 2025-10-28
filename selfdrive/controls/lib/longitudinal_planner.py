@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import math
-import numpy as np
+from math import sqrt
+from numpy import sin, zeros, interp as npinterp, clip as npclip, sqrt as npsqrt, abs, minimum, asarray, sum as npsum, log, max as npmax, arange, exp, diff
 import time
 from openpilot.common.numpy_fast import clip, interp
 
@@ -37,7 +37,7 @@ def get_max_accel(v_ego):
   return interp(v_ego, A_CRUISE_MAX_BP, A_CRUISE_MAX_VALS)
 
 def get_coast_accel(pitch):
-  return np.sin(pitch) * -5.65 - 0.3  # fitted from data using xx/projects/allow_throttle/compute_coast_accel.py
+  return sin(pitch) * -5.65 - 0.3  # fitted from data using xx/projects/allow_throttle/compute_coast_accel.py
 
 
 def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
@@ -49,7 +49,7 @@ def limit_accel_in_turns(v_ego, angle_steers, a_target, CP):
   # The lookup table for turns should also be updated if we do this
   a_total_max = interp(v_ego, _A_TOTAL_MAX_BP, _A_TOTAL_MAX_V)
   a_y = v_ego ** 2 * angle_steers * CV.DEG_TO_RAD / (CP.steerRatio * CP.wheelbase)
-  a_x_allowed = math.sqrt(max(a_total_max ** 2 - a_y ** 2, 0.))
+  a_x_allowed = sqrt(max(a_total_max ** 2 - a_y ** 2, 0.))
 
   return [a_target[0], min(a_target[1], a_x_allowed)]
 
@@ -107,9 +107,9 @@ class LongitudinalPlanner:
     self.v_desired_filter = FirstOrderFilter(init_v, 2.0, self.dt)
     self.v_model_error = 0.0
 
-    self.v_desired_trajectory = np.zeros(CONTROL_N)
-    self.a_desired_trajectory = np.zeros(CONTROL_N)
-    self.j_desired_trajectory = np.zeros(CONTROL_N)
+    self.v_desired_trajectory = zeros(CONTROL_N)
+    self.a_desired_trajectory = zeros(CONTROL_N)
+    self.j_desired_trajectory = zeros(CONTROL_N)
     self.solverExecutionTime = 0.0
     # logging cadence & state
     self.last_uncert_log_t = 0.0
@@ -156,21 +156,21 @@ class LongitudinalPlanner:
     if (len(model_msg.position.x) == ModelConstants.IDX_N and
       len(model_msg.velocity.x) == ModelConstants.IDX_N and
       len(model_msg.acceleration.x) == ModelConstants.IDX_N):
-      x = np.interp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.position.x) - model_error * T_IDXS_MPC
-      v = np.interp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.velocity.x) - model_error
-      a = np.interp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.acceleration.x)
-      j = np.zeros(len(T_IDXS_MPC))
+      x = npinterp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.position.x) - model_error * T_IDXS_MPC
+      v = npinterp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.velocity.x) - model_error
+      a = npinterp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.acceleration.x)
+      j = zeros(len(T_IDXS_MPC))
     else:
-      x = np.zeros(len(T_IDXS_MPC))
-      v = np.zeros(len(T_IDXS_MPC))
-      a = np.zeros(len(T_IDXS_MPC))
-      j = np.zeros(len(T_IDXS_MPC))
+      x = zeros(len(T_IDXS_MPC))
+      v = zeros(len(T_IDXS_MPC))
+      a = zeros(len(T_IDXS_MPC))
+      j = zeros(len(T_IDXS_MPC))
 
     if taco_tune:
       max_lat_accel = interp(v_ego, [5, 10, 20], [1.5, 2.0, 3.0])
-      curvatures = np.interp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.orientationRate.z) / np.clip(v, 0.3, 100.0)
-      max_v = np.sqrt(max_lat_accel / (np.abs(curvatures) + 1e-3)) - 2.0
-      v = np.minimum(max_v, v)
+      curvatures = npinterp(T_IDXS_MPC, ModelConstants.T_IDXS, model_msg.orientationRate.z) / npclip(v, 0.3, 100.0)
+      max_v = npsqrt(max_lat_accel / (abs(curvatures) + 1e-3)) - 2.0
+      v = minimum(max_v, v)
 
     if len(model_msg.meta.disengagePredictions.gasPressProbs) > 1:
       throttle_prob = model_msg.meta.disengagePredictions.gasPressProbs[1]
@@ -284,12 +284,12 @@ class LongitudinalPlanner:
       if hasattr(sm['modelV2'].meta, 'desirePrediction'):
         desire_probs = sm['modelV2'].meta.desirePrediction
         if len(desire_probs) > 1:
-          probs = np.asarray(desire_probs, dtype=float)
-          total = float(np.sum(probs))
+          probs = asarray(desire_probs, dtype=float)
+          total = float(npsum(probs))
           if total > 1e-6:
             p = probs / total
-            entropy = -np.sum(p * np.log(p + 1e-10))
-            max_entropy = np.log(len(p))
+            entropy = -npsum(p * log(p + 1e-10))
+            max_entropy = log(len(p))
             desire_entropy = float(entropy / max(max_entropy, 1e-6))  # normalized entropy in [0,1]
           else:
             desire_entropy = 0.0  # guard against all-zero vector
@@ -303,16 +303,16 @@ class LongitudinalPlanner:
         brake_probs = sm['modelV2'].meta.disengagePredictions.brakePressProbs
         if len(brake_probs) > 0:
           # Exponentially decayed max over the full horizon
-          probs = np.asarray(brake_probs, dtype=float)
+          probs = asarray(brake_probs, dtype=float)
           # Clip tiny brake blips so they don't inflate uncertainty
-          if float(np.max(probs)) < 0.015:
+          if float(npmax(probs)) < 0.015:
             probs = probs * 0.5
-          raw_brake_max = float(np.max(probs))
+          raw_brake_max = float(npmax(probs))
           # Time vector assuming model horizon step = DT_MDL
-          t = np.arange(len(probs), dtype=float) * DT_MDL
+          t = arange(len(probs), dtype=float) * DT_MDL
           lam = 0.6  # decay rate per second (tunable: 0.5–0.9 typical)
-          weights = np.exp(-lam * t)
-          disengage_risk = float(np.max(probs * weights))
+          weights = exp(-lam * t)
+          disengage_risk = float(npmax(probs * weights))
 
       # Combined uncertainty metric (range roughly 0..2), with dual-track filtering
       raw_uncertainty = desire_entropy + disengage_risk
@@ -406,10 +406,10 @@ class LongitudinalPlanner:
     self.mpc.update(self.lead_one, self.lead_two, v_cruise, x, v, a, j, sm['frogpilotPlan'].tFollow,
                     sm['frogpilotPlan'].trackingLead, personality=sm['controlsState'].personality)
 
-    self.a_desired_trajectory_full = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.a_solution)
-    self.v_desired_trajectory = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.v_solution)
-    self.a_desired_trajectory = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.a_solution)
-    self.j_desired_trajectory = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC[:-1], self.mpc.j_solution)
+    self.a_desired_trajectory_full = npinterp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.a_solution)
+    self.v_desired_trajectory = npinterp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.v_solution)
+    self.a_desired_trajectory = npinterp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.a_solution)
+    self.j_desired_trajectory = npinterp(CONTROL_N_T_IDX, T_IDXS_MPC[:-1], self.mpc.j_solution)
 
     # TODO counter is only needed because radar is glitchy, remove once radar is gone
     self.fcw = self.mpc.crash_cnt > 2 and not sm['carState'].standstill
@@ -417,8 +417,8 @@ class LongitudinalPlanner:
       cloudlog.info("FCW triggered")
 
     # Safety checks for rubber-banding mitigation
-    max_jerk = np.max(np.abs(self.mpc.j_solution))
-    max_accel_change = np.max(np.abs(np.diff(self.mpc.a_solution)))
+    max_jerk = npmax(abs(self.mpc.j_solution))
+    max_accel_change = npmax(abs(diff(self.mpc.a_solution)))
     if max_jerk > 5.0:  # m/s^3
       cloudlog.warning(f"High jerk detected: {max_jerk:.2f} m/s^3")
     if max_accel_change > 2.0:  # m/s^2
