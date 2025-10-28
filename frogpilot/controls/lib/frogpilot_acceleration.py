@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import numpy as np
+from numpy import searchsorted
 
 def cubic_interp(x, xp, fp):
      """Cubic interpolation using NumPy's native operations for speed."""
@@ -10,7 +10,7 @@ def cubic_interp(x, xp, fp):
          return fp[-1]
  
      # Find interval
-     i = np.searchsorted(xp, x) - 1
+     i = searchsorted(xp, x) - 1
      i = max(0, min(i, len(xp)-2))  # clamp the index
  
      # Normalized position
@@ -26,7 +26,7 @@ def akima_interp(x, xp, fp):
      elif x >= xp[-1]:
          return fp[-1]
  
-     i = np.searchsorted(xp, x) - 1
+     i = searchsorted(xp, x) - 1
      i = max(0, min(i, len(xp)-2))  # clamp the index
  
      t = (x - xp[i]) / float(xp[i+1] - xp[i])
