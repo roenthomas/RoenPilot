@@ -1,9 +1,10 @@
-import math
-import numpy as np
+from math import radians
+from numpy import pi
 from collections import deque
 
 from cereal import log
 from openpilot.common.filter_simple import FirstOrderFilter
+from openpilot.common.numpy_fast import clip
 from openpilot.selfdrive.car.interfaces import FRICTION_THRESHOLD
 from openpilot.selfdrive.controls.lib.drive_helpers import MIN_SPEED, get_friction
 from openpilot.selfdrive.controls.lib.latcontrol import LatControl
@@ -43,7 +44,7 @@ class LatControlTorque(LatControl):
     self.lat_accel_request_buffer_len = int(LAT_ACCEL_REQUEST_BUFFER_SECONDS / self.dt)
     self.lat_accel_request_buffer = deque([0.] * self.lat_accel_request_buffer_len , maxlen=self.lat_accel_request_buffer_len)
     self.previous_measurement = 0.0
-    self.measurement_rate_filter = FirstOrderFilter(0.0, 1 / (2 * np.pi * LP_FILTER_CUTOFF_HZ), self.dt)
+    self.measurement_rate_filter = FirstOrderFilter(0.0, 1 / (2 * pi * LP_FILTER_CUTOFF_HZ), self.dt)
 
   def update_live_torque_params(self, latAccelFactor, latAccelOffset, friction):
     self.torque_params.latAccelFactor = latAccelFactor
@@ -62,20 +63,20 @@ class LatControlTorque(LatControl):
       output_torque = 0.0
       pid_log.active = False
     else:
-      measured_curvature = -VM.calc_curvature(math.radians(CS.steeringAngleDeg - params.angleOffsetDeg), CS.vEgo, params.roll)
+      measured_curvature = -VM.calc_curvature(radians(CS.steeringAngleDeg - params.angleOffsetDeg), CS.vEgo, params.roll)
       roll_compensation = params.roll * ACCELERATION_DUE_TO_GRAVITY
-      curvature_deadzone = abs(VM.calc_curvature(math.radians(self.steering_angle_deadzone_deg), CS.vEgo, 0.0))
-      lateral_accel_deadzone = curvature_deadzone * CS.vEgo ** 2
+      curvature_deadzone = abs(VM.calc_curvature(radians(self.steering_angle_deadzone_deg), CS.vEgo, 0.0))
+      lateral_accel_deadzone = curvature_deadzone * CS.vEgo * CS.vEgo
 
-      delay_frames = int(np.clip(lat_delay / self.dt, 1, self.lat_accel_request_buffer_len))
+      delay_frames = int(clip(lat_delay / self.dt, 1, self.lat_accel_request_buffer_len))
       expected_lateral_accel = self.lat_accel_request_buffer[-delay_frames]
       # TODO factor out lateral jerk from error to later replace it with delay independent alternative
-      future_desired_lateral_accel = desired_curvature * CS.vEgo ** 2
+      future_desired_lateral_accel = desired_curvature * CS.vEgo * CS.vEgo
       self.lat_accel_request_buffer.append(future_desired_lateral_accel)
       gravity_adjusted_future_lateral_accel = future_desired_lateral_accel - roll_compensation
       desired_lateral_jerk = (future_desired_lateral_accel - expected_lateral_accel) / lat_delay
 
-      measurement = measured_curvature * CS.vEgo ** 2
+      measurement = measured_curvature * CS.vEgo * CS.vEgo
       measurement_rate = self.measurement_rate_filter.update((measurement - self.previous_measurement) / self.dt)
       self.previous_measurement = measurement
 
